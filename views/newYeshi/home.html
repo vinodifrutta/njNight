@@ -1,0 +1,58 @@
+<!doctype html>
+<!--告知浏览器文档所使用的HTML规范-->
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+    <title>夜之金陵</title>
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/json2.js"></script>
+    <script src="../../js/static.js?v=1"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/newYeshi/home.css?v=2">
+    <style>
+    </style>
+    　　
+</head>
+
+　　
+
+<body>
+    <div class="home-bac">
+        <div class="home-center">
+            <div class="home-up"  onclick="gotoHotList()">
+                <div class="home-up-pic"></div>
+                <div class="home-up-text">热门必逛街区</div>
+            </div>
+            <div class="home-up" onclick="gotoNightTour()">
+                <div class="home-bottom-pic" ></div>
+                <div class="home-up-text">夜间消费攻略</div>
+            </div>
+        </div>
+    </div>　　
+</body>
+
+</html>
+
+<script>
+	saveAsk('夜之金陵');
+    var typeName = '夜之金陵';
+    document.title = typeName;
+    $("title").html(typeName);
+    //跳转热门必逛街区
+   function gotoHotList(){
+        window.location.href = pageUrl + '/views/newYeshi/hostList.html';
+    }
+
+    //跳转夜游
+    function gotoNightTour(){
+        window.location.href = pageUrl + '/views/newYeshi/nightTour.html';
+    }
+
+
+</script>

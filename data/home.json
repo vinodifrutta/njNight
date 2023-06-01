@@ -1,0 +1,34 @@
+[
+  {
+    "CODE": "msh",
+    "PNUM": "10001071",
+    "DICT_ID": "06b27118f7d14d4b88613485289bbedd",
+    "NUM": "100010711000",
+    "ICON": "../image/top1.png",
+    "NAME": "美食汇"
+  },
+  {
+    "CODE": "rmg",
+    "PNUM": "10001071",
+    "DICT_ID": "abae229a76cd417cb5af5f0776d2d1af",
+    "NUM": "100010711001",
+    "ICON": "../image/top2.png",
+    "NAME": "热门购"
+  },
+  {
+    "CODE": "jly",
+    "PNUM": "10001071",
+    "DICT_ID": "b64b62e0a2ec4084914b33feb3ac108a",
+    "NUM": "100010711002",
+    "ICON": "../image/top3.png",
+    "NAME": "金陵游"
+  },
+  {
+    "CODE": "lft",
+    "PNUM": "10001071",
+    "DICT_ID": "a4bbbb1caca9431ead746a9601673966",
+    "NUM": "100010711003",
+    "ICON": "../image/top4.png",
+    "NAME": "乐翻天"
+  }
+]

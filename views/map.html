@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="user-scalable=no">
+  <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+  <title>地图</title>
+  <link rel="stylesheet" href="/css/map.css" />
+  <link rel="stylesheet" href="/css/map/sidebar.css" />
+  <link rel="stylesheet" href="/css/map/sidebarSkins.css" />
+  <link rel="stylesheet" href="/css/map/style.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/map/common.css" />
+  <link rel="stylesheet" href="/css/map/marketEnt.css" />
+  <script src="/js/jquery-3.4.1.min.js"></script>
+  <script src="/js/static.js"></script>
+  <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=UQQpmhDmFB44H1scx27MezscrlcTT5Tl"></script>
+  <script type="text/javascript" src="https://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+  <script src="/js/map/jquery.mousewheel.js"></script>
+  <script src="/js/map/scrollbar.min.js"></script>
+  <script src="/js/map/TextIconOverlay.js"></script>
+  <script src="/js/map/MarkerClusterer_xwx.js"></script>
+  <script src="/js/map/MapDrawingToolCommon.js"></script>
+  <script src="/js/map/MapPolygonDrawingTool.js"></script>
+  <script src="/js/map/commonTool.js"></script>
+  <script src="/js/map/sidebarConfig.js"></script>
+  <script src="/js/map/sidebar.js"></script>
+  <script src="/js/map/marketEnt.js"></script>
+  <script src="/js/map/total.js"></script>
+</head>
+
+<body>
+  <div class="btns">
+    <div class="item-btn" onclick="toSift()">
+      <img class="map" src="https://site.sumexsoft.com/images/wechat/vip/sx.png" />
+    </div>
+    <div class="item-btn" onclick="toChart()">
+      <img class="map" src="https://site.sumexsoft.com/images/wechat/vip/tb.png" />
+    </div>
+    <!-- <div class="item-btn">
+      <img class="map" onclick="toSift()" src="https://site.sumexsoft.com/images/wechat/vip/lb.png" />
+    </div> -->
+    <div class="item-btn" onclick="domJs.toSift()">
+      <img class="map" src="https://site.sumexsoft.com/images/wechat/vip/dw.png" />
+    </div>
+  </div>
+  <div class="btns-right">
+    <div class="item-btn" onclick="domJs.toAdd()">
+      <span style="font-size: 20px;">+</span>
+    </div>
+    <div class="item-btn" onclick="domJs.toPrep()">
+      <span style="font-size: 20px;">-</span>
+    </div>
+  </div>
+  <div id="mapContainer"></div>
+  <script type="text/javascript">
+    // var divId = getUrlParameter('divId');
+    var divId = ''
+    var indIds = []
+    var data = JSON.parse(getUrlParameter('data'));
+    console.log('******************', data)
+    if (data.adminDiv) {
+      divId = data.adminDiv
+    }
+    if (data.indClass) {
+      indIds = data.indClass.split(",")
+    }
+    console.log('divId, indIds', divId, indIds)
+
+    function toSift() {
+      window.location.href = pageUrl + '/views/sift.html?data=' + JSON.stringify(this.getCondition());
+
+    }
+
+    function toChart() {
+      window.location.href = pageUrl + '/views/chartList.html?data=' + JSON.stringify(this.getCondition());
+
+    }
+
+    // 获取查询条件
+    function getCondition() {
+      // // 行政区划
+      // var divId = '';
+      // //业态分类
+      // var indIds = [];
+      indIds = indIds.join(',');
+
+      console.log('indIds', indIds, divId)
+      //当前位置
+      var latitude = 31.998414;
+      var longitude = 118.785146
+      var data = {
+        adminDiv: divId,
+        indClass: indIds,
+        entName: '',
+        latitude: latitude,
+        longitude: longitude,
+      };
+      return data;
+    }
+
+    function getUrlParameter(name) {
+      name = name.replace(/[]/, "\[").replace(/[]/, "\[").replace(/[]/, "\\\]");
+      var regexS = "[\\?&]" + name + "=([^&#]*)";
+      var regex = new RegExp(regexS);
+      var results = regex.exec(window.parent.location.href);
+      if (results == null) return "{}"; else {
+        return decodeURI(results[1])||"{}";
+      }
+    };
+
+  </script>
+</body>
+
+</html>

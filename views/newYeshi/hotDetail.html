@@ -1,0 +1,120 @@
+<!doctype html>
+<!--告知浏览器文档所使用的HTML规范-->
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <!-- 清除缓存 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>热门详情</title>
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/json2.js"></script>
+    <script src="../../js/static.js?v=1"></script>
+    <!-- 微信 -->
+    <!-- <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script> -->
+    <link rel="stylesheet" type="text/css" href="../../css/newYeshi/hotDetail.css?v=3">
+    <style>
+    </style>
+    　　
+</head>
+
+　　
+
+<body>
+    <div class="main">
+        <div class="introduction" id="dataList">
+            <!-- <iframe class="vedio" src=""></iframe>
+            <div class="vediotext">
+                <div class="vediotext-garytext">交通方式：步行+游船 </div>
+            </div> -->
+        </div>
+
+        <div class="change" id="detailList">
+            <!-- <div  class="change-all" >
+                <div class="title"> 南京中国科举博物馆</div>
+                <div class="pic" src="" width="100%"></div>
+                <div class="pictext">南京唯一开放至21:00的博物馆，4层展区全部建在地下，走进去简直别有洞天。夜间流光溢彩的光影秀更是震撼，值得打卡！</div>
+                <div class="footer">
+                    <div class="footer-left"></div>
+                    <div class="footer-text">南京市建邺区吴侯街与江东南路交叉口东南100米</div>
+                    <div class="footer-right"></div>
+                </div>
+            </div> -->
+        </div>
+</body>
+
+</html>
+
+<script>
+    saveAsk('夜之金陵街区详情');
+    var sort = getUrlParameter('sort');
+    console.log(sort, "sort");
+    window.onload = function () {
+        getListData()
+
+        //微信自动播放
+        // document.addEventListener("WeixinJSBridgeReady", function () {
+        //     document.getElementById("video0").play();
+        // }, false);
+
+    
+
+    }
+    //加载列表
+    function getListData() {
+        $.ajax({
+            url: staticurl + '/api/bBusStreet/queryList',
+            type: 'GET',
+            async: false,
+
+            success: function (res) {
+                var josndata = []
+                josndata.push(JSON.parse(res));
+                console.log(josndata, "josndata");
+
+                var html = '';
+                html += ` <video preload="auto" class="vedio" id="video0" src=` + josndata[0].data.datalist[sort].videoUrl + ` controls="" webkit-playsinline="" playsinline="" x5-playsinline=""
+       x-webkit-airplay="allow"  style="width= 100%; height=100%; object-fit: fill;background-color:#000"  initial-time='0.01'    ></video>`
+                // html += '<iframe  class="vedio" autoPlay=true style="border:none" src=' + josndata[0].data.datalist[sort].videoUrl+ '?rel=0&amp;autoplay=1' +'></iframe>';
+                html += '<div class="vediotext">';
+                html += '<div class="vediotext-garytext">' + josndata[0].data.datalist[sort].videoText + '</div>';
+                html += '</div>';
+                $("#dataList").append(html)
+
+                var newhtml = '';
+                for (var i = 0; i < josndata[0].data.datalist[sort].children.length; i++) {
+                    newhtml += '<div class="change-all" onclick="gotoDetail(\'' + josndata[0].data.datalist[sort].children[i].yzjlId + '\')">'
+                    newhtml += '<div class="title">' + josndata[0].data.datalist[sort].children[i].name + '</div>';
+                    newhtml += '<img class="pic"  src=' + josndata[0].data.datalist[sort].children[i].img + '></img>';
+                    newhtml += '<div class="pictext">' + josndata[0].data.datalist[sort].children[i].text + '</div>';
+                    newhtml += '</div>'
+                }
+                $("#detailList").append(newhtml)
+            },
+            error: function (err) {
+                console.log('err', err);
+            }
+        });
+    }
+    //跳转详情页
+    function gotoDetail(val) {
+        console.log(val, "val");
+        window.location.href = pageUrl + '/views/newYeshi/nightDetail.html?sort=' + val
+    }
+
+    function getUrlParameter(name) {
+        name = name.replace(/[]/, "\[").replace(/[]/, "\[").replace(/[]/, "\\\]");
+        var regexS = "[\\?&]" + name + "=([^&#]*)";
+        var regex = new RegExp(regexS);
+        var results = regex.exec(window.parent.location.href);
+        if (results == null) return ""; else {
+            return decodeURI(results[1]);
+        }
+    };
+
+</script>

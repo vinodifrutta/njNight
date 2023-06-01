@@ -1,0 +1,59 @@
+@import url("../font/stylesheet.css");
+/* CSS 重置
+        ---------------------------------------------------------------------------------------------------------------------------------- */
+* {
+    margin:0; padding:0; list-style:none; /* reset */
+    font-family: Microsoft YaHei; /* 字体 */
+    font-family: SourceHanSansCN-Light !important;
+    -webkit-box-sizing: border-box; /* 边框不增加元素高宽 */
+    -moz-box-sizing: border-box; /* 边框不增加元素高宽 */
+    box-sizing: border-box; /* 边框不增加元素高宽 */
+}
+html{ width: 100%; height:100%; font-size:625%;  }/* 1rem = 100px */
+body{ width: 100%; height:100%; top: 0; bottom: 0; left: 0; right: 0; /* position: absolute;  line-height: 0;*/ }
+
+.select-bar{ position: absolute; top: 0; height: 0.4rem; left: 0; right: 0; box-shadow: 0 0.005rem 8px 0 rgba(33, 43, 54, 0.15), 0 2px 4px 0 rgba(33, 43, 54, 0.05); }
+.select-bar > .select{ height: 0.2rem; margin: 0.1rem auto; width: 0.8rem; font-size: 0; }
+.select-bar > .select > select {
+    height: 98%;
+    width: 100%;
+    border:0;
+    outline:none;
+    appearance:none;
+    -moz-appearance:none;
+    -webkit-appearance: none;
+    background-color: #FFF;
+    color: #787878;
+    font-size: 0.14rem;
+    font-weight: bold;
+    background: url("../image/select.png") no-repeat scroll 95% center transparent; background-size: 0.11rem auto;
+    text-align: center;
+}
+
+.list-container{ position: absolute; top: 0.5rem; bottom: 0; left: 0; right: 0; padding: 0.1rem 0.1rem 0.1rem 0.1rem;  overflow-y: auto; }
+.list-container > .list{ height:auto; }
+.list-container > .list > .every{ height: auto; margin-bottom: 0.1rem; border-radius: 0.05rem; background-color: #DBDBDB; position: relative; font-size: 0; overflow: hidden;  box-shadow: 0 1px 8px 0 rgba(33, 43, 54, 0.15), 0 2px 4px 0 rgba(33, 43, 54, 0.05); }
+.list-container > .list > .every > .image{ height: 1rem; position: relative; }
+
+.list-container > .list > .every > .image > .status{ position: absolute; top: 0; height: 0.28rem; left: 0; width: 0.75rem; line-height: 0.28rem; font-size: 0.15rem; color: #FFF; text-align: center; border-top-left-radius: 0.05rem; border-bottom-right-radius: 0.05rem; }
+.list-container > .list > .every > .image > .status.s0{ background-color: #23B36D; }
+.list-container > .list > .every > .image > .status.s1{ background-color: #247EB3; }
+.list-container > .list > .every > .image > .status.s2{ background-color: #929292; }
+.list-container > .list > .every > .image > .status > span{ display: none;}
+.list-container > .list > .every > .image > .status.s0 > .s0{ display: inline !important; }
+.list-container > .list > .every > .image > .status.s1 > .s1{ display: inline !important; }
+.list-container > .list > .every > .image > .status.s2 > .s2{ display: inline !important; }
+.list-container > .list > .every > .image > .name{ position: absolute; height: 0.20rem; line-height: 0.20rem; top:0.41rem; left:0; right: 0; padding-left: 0.1rem; padding-right: 0.3rem; text-align: right; color: #FFF; font-size: 0.18rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;  }
+.list-container > .list > .every > .image > .mask{ position: absolute; top: 0; bottom: 0; left: 0; right: 0;   background:  url(../image/img-mask.png) no-repeat scroll center center; background-size: 100% 100%; }
+.list-container > .list > .every > .image > img{ height: 100%; width:100%; }
+
+
+.list-container > .list > .every > .info{ height: auto; background-color: #FFF; overflow: hidden; }
+.list-container > .list > .every > .info > .name{ height: auto; margin-top: 0.1rem; padding: 0 0.1rem 0 0.1rem; line-height: 0.2rem; font-size: 0.18rem; word-break: break-all;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;  -webkit-line-clamp: 2; overflow: hidden;  }
+.list-container > .list > .every > .info > .time{ height: 0.13rem; margin: 0.1rem 0rem 0.1rem 0rem; padding: 0 0.1rem 0 0.1rem; line-height: 0.13rem; font-size: 0.13rem;  color: #2D2D2D; }
+.list-container > .list > .every > .info > .time > .date{ color: #797979; }
+.list-container > .list > .every > .info > .time > span{ display: none;}
+
+.list-container > .list > .every > .info > .time.s0 .s0{ display: inline !important;  }
+.list-container > .list > .every > .info > .time.s1 .s1{ display: inline !important;  }
+.list-container > .list > .every > .info > .time.s2 .s2{ display: inline !important;  }

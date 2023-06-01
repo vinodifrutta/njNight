@@ -1,0 +1,27 @@
+/* CSS 重置
+        ---------------------------------------------------------------------------------------------------------------------------------- */
+* {
+    margin:0; padding:0; list-style:none; /* reset */
+    font-family: Microsoft YaHei; /* 字体 */
+    -webkit-box-sizing: border-box; /* 边框不增加元素高宽 */
+    -moz-box-sizing: border-box; /* 边框不增加元素高宽 */
+    box-sizing: border-box; /* 边框不增加元素高宽 */
+}
+html{ width: 100%; height:100%; font-size:625%;  }/* 1rem = 100px */
+body{ width: 100%; height:100%; top: 0; bottom: 0; left: 0; right: 0; /* position: absolute;  line-height: 0;*/ }
+
+body{ background-color: #EEEEEE; }
+.activity-top{ position: absolute; top: 0; height: 1rem; left: 0; right: 0; padding: 0 0.1rem 0 0.1rem; background-color: #FFF; overflow: hidden; }
+.activity-top > .title{ height: 0.16rem; margin-top: 0.13rem; margin-bottom: 0.08rem; line-height: 0.16rem; font-size: 0.16rem; color: #353535; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.activity-top > .time{ height: 0.3rem;  }
+.activity-top > .time > .icon{ float:left; width: 0.12rem; height: 0.12rem; margin-top: 0.095rem; font-size: 0; }
+.activity-top > .time > .icon > img{ height: 100%; width:100%;  }
+.activity-top > .time > .key{ float:left; width: auto; height: 0.12rem; line-height: 0.12rem; margin-top: 0.095rem; margin-left:0.1rem; font-size: 0.12rem; color: #CBCBCB; }
+.activity-top > .time > .value{ float:left; width: auto; height: 0.12rem; line-height: 0.12rem; margin-top: 0.095rem; margin-left:0.1rem; font-size: 0.12rem; color: #CBCBCB; }
+.activity-top > .time.line{ border-top: 0.01rem solid #EEEEEE; }
+
+.content{ position: absolute; top: 1.1rem; bottom: 0; left: 0; right: 0; padding: 0.1rem; overflow-y: auto; background-color: #FFF; font-size: 0.14rem; line-height: 0.16rem; }
+.content > .image{ font-size: 0; height: auto; }
+.content > .image > img{ width:100%; }
+
+.content > .text{ font-size: 0.13rem; line-height: 0.25rem; color: #969696; text-indent: 2em; line-height: 0.16rem;  }

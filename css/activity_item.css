@@ -1,0 +1,31 @@
+/* CSS 重置
+        ---------------------------------------------------------------------------------------------------------------------------------- */
+* {
+    margin:0; padding:0; list-style:none; /* reset */
+    font-family: Microsoft YaHei; /* 字体 */
+    -webkit-box-sizing: border-box; /* 边框不增加元素高宽 */
+    -moz-box-sizing: border-box; /* 边框不增加元素高宽 */
+    box-sizing: border-box; /* 边框不增加元素高宽 */
+}
+html{ width: 100%; height:100%; font-size:625%;  }/* 1rem = 100px */
+body{ width: 100%; height:100%; top: 0; bottom: 0; left: 0; right: 0; /* position: absolute;  line-height: 0;*/ }
+
+body{ background-color: #EEEEEE; }
+.activity-top{ height: auto; padding: 0 0.1rem 0.05rem 0.1rem; background-color: #FFF; overflow: hidden; }
+.activity-top > .title{ height: auto; margin-top: 0.13rem; margin-bottom: 0.08rem; line-height: 0.26rem; font-size: 0.18rem; color: #353535; word-break: break-all;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;  -webkit-line-clamp: 2; overflow: hidden; }
+.activity-top > .time{ height: 0.3rem;  }
+.activity-top > .time > .icon{ float:left; width: 0.12rem; height: 0.12rem; margin-top: 0.095rem; font-size: 0; }
+.activity-top > .time > .icon > img{ height: 100%; width:100%;  }
+.activity-top > .time > .key{ float:left; width: auto; height: 0.12rem; line-height: 0.12rem; margin-top: 0.095rem; margin-left:0.1rem; font-size: 0.13rem; color: #727272; }
+.activity-top > .time > .value{ float:left; width: auto; height: 0.12rem; line-height: 0.12rem; margin-top: 0.095rem; margin-left:0.1rem; font-size: 0.13rem; color: #969696; }
+.activity-top > .time.line{ border-top: 0.01rem solid #EEEEEE; }
+.activity-top > .time > .state{ float:right; width: 0.65rem; height: 0.2rem; margin-top:0.05rem; line-height: 0.2rem; font-size: 0.11rem; text-align: center; color: #FFF; border-radius: 0.03rem; }
+.activity-top > .time > .state.s0{ background-color: #23B36D; display: inline; }
+.activity-top > .time > .state.s1{ background-color: #247EB3; display: inline; }
+.activity-top > .time > .state.s2{ background-color: #929292; display: inline; }
+.activity-top > .time > .state > span{ display: none; }
+.activity-top > .time > .state.s0 > .s0{ display: inline; }
+.activity-top > .time > .state.s1 > .s1{ display: inline; }
+.activity-top > .time > .state.s2 > .s2{ display: inline; }
+
+.content{ margin-top: 0.1rem; padding: 0.1rem; overflow-y: auto; background-color: #FFF; font-size: 0.15rem; line-height: 0.3rem; color: #727272; text-indent: 2em; }

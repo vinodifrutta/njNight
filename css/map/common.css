@@ -1,0 +1,61 @@
+.m-loading {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10500;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, .7);
+}
+
+.m-loading .loading-box {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 70px;
+    height: 40px;
+    margin: auto;
+    text-align: center;
+}
+
+.m-loading .loading-text {
+    margin-top: 15px;
+    font-size: 16px;
+    color: #fff;
+
+}
+
+#loading1{
+	display: none;
+}
+
+.ie8 #loading1{
+	display: inline;
+}
+
+.ie8 #loading2{
+	display: none;
+}
+
+.BMapLabel{
+	max-width: none;
+}
+
+
+img.right-no-data {
+    width: 100%;
+    padding: 30px 150px;
+    padding: calc(50% - 190px) 150px;
+}
+
+.collapseDiv img.right-no-data{
+	padding: 200px 150px;
+}
+.right_echart{
+	margin: 0 15px;
+}

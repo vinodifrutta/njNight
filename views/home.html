@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    
+    <title>乐购金陵</title>
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/json2.js"></script>
+    <script src="../js/static.js?v=1"></script>
+    <link rel="stylesheet" type="text/css" href="../css/home.css?v=6">
+    
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div class="home-top">
+        <div class="image"></div>
+        <div class="cates">
+            <div class="cate " onclick="gotoActivityList('06b27118f7d14d4b88613485289bbedd' , '美食荟')">
+                <div class="icon index1"></div>
+                <div class="text">美食荟</div>
+            </div>
+            <div class="cate " onclick="gotoActivityList('abae229a76cd417cb5af5f0776d2d1af' , '时尚购')">
+                <div class="icon index2"></div>
+                <div class="text">时尚购</div>
+            </div>
+            <div class="cate " onclick="gotoActivityList('b64b62e0a2ec4084914b33feb3ac108a' , '达人游')">
+                <div class="icon index3"></div>
+                <div class="text">达人游</div>
+            </div>
+            <div class="cate " onclick="gotoActivityList('a4bbbb1caca9431ead746a9601673966' , '嗨翻天')">
+                <div class="icon index4"></div>
+                <div class="text">嗨翻天</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="home-container">
+        <div class="every" onclick="gotoVrList()">
+            <div class="block"><img src="../image/dot3.jpg" /></div>
+        </div>
+        <div class="every" onclick="gotoEntItem('big' , '金陵抢先逛')">
+            <div class="block"><img src="../image/dot1.png" /></div>
+        </div>
+        <div class="every" onclick="gotoYeshiList()">
+            <div class="block"><img src="../image/dot2.png" /></div>
+        </div>
+        <div class="every" onclick="gotoEntItem('lzh' , '南京老字号')">
+            <div class="block"><img src="../image/dot0.png" /></div>
+        </div>
+    </div>
+
+    <div class="foot">
+        <div>
+            <div class="image"><img src="../image/foot2.png" /></div>
+            <div class="text">数据来源于南京市商务局</div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
+<script>
+    saveAsk('首页');
+
+
+    // 加载活动图标
+    $(document).ready(function () {
+        // $.ajax({
+        //     url: pageUrl + '/data/home.json',
+        //     type: 'GET',
+        //     async: true,
+        //     data: { code: 'activityType' },
+        //     success: function (res) {
+        //         console.log(res);
+        //         var data = res;
+        //         console.log(data);
+        //         if(null != data){
+        //             var templateHtml = $(".cates").find(".cate").eq(0).prop("outerHTML");
+        //             templateHtml = templateHtml.replace("temp","");
+        //             for(var i = 0 ; i < data.length ; i++){
+        //                 var html = templateHtml.replace("{i}",i+1);
+        //                 html = html.replace("{NAME}",data[i].NAME);
+        //                 html = html.replace("{ICON}",data[i].ICON);
+        //                 html = html.replace("{DICT_ID}",data[i].DICT_ID);
+        //                 $(".cates").append(html);
+        //                 if(i == 3){
+        //                     break;
+        //                 }
+        //             }
+        //         }
+        //     },
+        //     error: function (err) {
+        //         console.log('err', err);
+        //     }
+        // });
+    });
+
+
+    // 点击大图跳转活动详情
+    function gotoActivityItem(id) {
+        window.location.href = pageUrl + '/views/activityItem.html?id=';
+    }
+
+    // 点击图标跳转活动列表
+    function gotoActivityList(DICT_ID, typeName) {
+        window.location.href = pageUrl + '/views/activityList.html?dictId=' + DICT_ID + "&typeName=" + typeName;
+    }
+
+    // 跳转网点列表
+    function gotoEntItem(type, typeName) {
+        console.log('type', type)
+        window.location.href = pageUrl + '/views/entList.html?type=' + type + "&typeName=" + typeName;
+    }
+
+    // 跳转夜市列表
+    function gotoYeshiList() {
+        // window.location.href = pageUrl + '/views/yeshiList.html?';
+        window.location.href = pageUrl + '/views/newYeshi/home.html';
+
+    }
+
+    // 跳转VR 云导购链接
+    function gotoVrList() {
+        var url = 'https://vrbuy.alphafun.com/custom/index.html?id=402';
+        saveAsk("VR 云导购", url);
+        window.location.href = url;
+    }
+
+</script>

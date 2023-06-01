@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>默认首页</title>
+    <script src="../js/jquery-1.12.4.min.js" type="text/javascript"></script>
+    <script src="../js/json2.js"></script>
+    <script src="../js/static.js?v=1"></script>
+    <!-- 工具类 -->
+    <script src="../js/JavaScriptUtils.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/entActivityItem.css">
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div class="activity-top">
+        <div class="title" id="title"></div>
+        <div class="time">
+            <div class="icon"><img src="../image/time1.png" /></div>
+            <div class="key">活动时间</div>
+            <div class="value time"></div>
+        </div>
+        <div class="time line">
+            <div class="icon"><img src="../image/addr1.png" /></div>
+            <div class="key">活动地址</div>
+            <div class="value addr"></div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="image"></div>
+        <div class="text"></div>
+    </div>
+
+</body>
+
+<script>
+    saveAsk('活动详情');
+
+    // 列表带入的参数
+    var activityId = getUrlParameter('activityId');
+    var entId = getUrlParameter('entId');
+    var type = getUrlParameter('type');
+    var path = "../json/queryEntList.json";
+    if (type === 'lzh') {
+        path = "../json/queryLzhEntList.json"
+    }
+
+    //详情页数据
+    $(document).ready(function () {
+        // $.getJSON(path,function (josndata){
+        //     let data = {}
+        //     josndata.forEach(e=>{
+        //         if(e.entId === entId && e.activityList){
+        //             e.activityList.forEach(activity=>{
+        //                 if(activity.activityId === activityId){
+        //                     data = activity;
+        //                 }
+        //             })
+        //         }
+        //     })
+        //     // if(null != data){
+        //         var name = data.name;
+        //         var startDate = data.startDate;
+        //         var endDate = data.endDate;
+        //         var address = data.address;
+        //         var content = data.content;
+        //         var imgs = data.imgs;
+        //         $(".title").text(name);
+        //         $(".value.time").text(startDate + "至"+ endDate);
+        //         $(".value.addr").text(address);
+        //         $(".content").find(".text").text(content);
+        //         if(imgs !=null && imgs != "" && imgs != undefined){
+        //             for(var i = 0 ; i < imgs.length; i++){
+        //                 $(".content").find(".image").append("<img src='" + imgs[i]["path"] + "'/>");
+        //             }
+
+        //         }
+        //         //$(".content").find(".image").append("<img src='../image/dot0.png'/>");
+        //     // }
+        // })
+
+        $.ajax({
+            url: staticurl + '/xcxEntActivity/queryById',
+            type: 'GET',
+            async: true,
+            data: { id: activityId },
+            success: function (res) {
+                var data = JSON.parse(res);
+                console.log(data);
+                if (null != data) {
+                    var name = data.name;
+                    var startDate = data.startDate;
+                    var endDate = data.endDate;
+                    var address = data.address;
+                    var content = data.content;
+                    var imgs = data.imgs;
+                    $(".title").text(name);
+                    $(".value.time").text(startDate + "至" + endDate);
+                    $(".value.addr").text(address);
+                    $(".content").find(".text").text(content);
+                    if (imgs != null && imgs != "" && imgs != undefined) {
+                        for (var i = 0; i < imgs.length; i++) {
+                            $(".content").find(".image").append("<img src='" + imgs[i]["path"] + "'/>");
+                        }
+
+                    }
+                    //$(".content").find(".image").append("<img src='../image/dot0.png'/>");
+                }
+            },
+            error: function (err) {
+                console.log('err', err);
+            }
+        });
+    });
+
+</script>

@@ -1,0 +1,151 @@
+<!doctype html>
+<!--告知浏览器文档所使用的HTML规范-->
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <!-- 清除缓存 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>景点详情</title>
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/json2.js"></script>
+    <script src="../../js/static.js?v=1"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/newYeshi/spotDetail.css?v=3">
+    <style>
+    </style>
+    　　
+</head>
+
+　　
+
+<body>
+    <div class="main" id="dataList">
+        <div class="title">南京中国科举博物馆 </div>
+        <img class="pic" width="100%" height="100%" src=""></img>
+        <div class="detail">开放至21:00的博物馆，尽情感受博物馆的奇妙夜</div>
+        <div class="title-small">营业信息</div>
+        <div class="title-small-detail">
+            <div class="title-small-detail-icon1"></div>
+            <div class="title-small-detail-text">夏令09:00-20:30 / 冬令09:00-21:00</div>
+        </div>
+        <div class="title-small-detail">
+            <div class="title-small-detail-icon2"></div>
+            <div class="title-small-detail-text">南京市建邺区吴侯街与江东南路交叉口东南100米</div>
+            <div class="title-small-detail-right"></div>
+        </div>
+        <div class="title-small-detail">
+            <div class="title-small-detail-icon3"></div>
+            <div class="title-small-detail-text">025-84797961</div>
+            <div class="title-small-detail-phone"></div>
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>
+
+<script>
+    saveAsk('夜之金陵商户详情');
+    var getId = getUrlParameter('id');
+
+    window.onload = function () {
+        getListData()
+        onloadCallback()
+    }
+    //加载列表
+    function getListData() {
+        $.ajax({
+            url: staticurl + '/api/bBusStreet/queryEntById',
+            type: 'GET',
+            async: false,
+            data: {
+                id: getId
+            },
+            success: function (res) {
+                var josndata = []
+                josndata.push(JSON.parse(res));
+                console.log(josndata, "josndata");
+
+                var pic = josndata[0].data.detailsImgUrl.split(',')
+                console.log(pic, "图片数组")
+
+                var map = bd_decrypt(josndata[0].data.longitude, josndata[0].data.latitude)
+                var html = '';
+                html += `<div class="title">` + josndata[0].data.merchantTitle + `</div>`
+
+                html += ` <div class="image"><div id="full_feature" class="swipslider"><ul class="sw-slides">`
+                for (var i = 0; i < pic.length; i++) {
+                    html += ` <li class="sw-slide">
+            <img class="pic" src=`+ pic[i] + `></img></li>`
+                }
+                html += `</ul></div></div> `
+                html += `     <div class="detail">` + josndata[0].data.merchantIntroduce + `</div>
+           <div class="title-small">营业信息</div>
+            <div class="title-small-detail" >
+             <div class="title-small-detail-icon1"></div>
+             <div class="title-small-detail-text">` + josndata[0].data.merchantOpeningHours + `</div>
+              </div>
+            <div class="title-small-detail">
+                  <div class="title-small-detail-icon2"></div>
+            <div class="title-small-detail-text">`+ josndata[0].data.merchantAddress + `</div>
+  <div class="title-small-detail-right"><a href="https://uri.amap.com/marker?position=` + map.lng + `,` + map.lat + `&name=` + josndata[0].data.merchantTitle + `"/></div>
+           </div><div class="title-small-detail">
+               <div class="title-small-detail-icon3"></div>`
+                if (josndata[0].data.merchantPhone === '' || josndata[0].data.merchantPhone === null || josndata[0].data.merchantPhone === '暂无电话') {
+                    html += `<div class="title-small-detail-text">暂无电话</div>`
+                } else {
+                    html += ` <div class="title-small-detail-text"><a href="tel:` + josndata[0].data.merchantPhone + `">` + josndata[0].data.merchantPhone + `</a></div>`
+                }
+                html += `  <div class="title-small-detail-phone"><a href="tel:` + josndata[0].data.merchantPhone + `"/></div></div>`
+                $("#dataList").append(html)
+            },
+            error: function (err) {
+                console.log('err', err);
+            }
+        });
+    }
+
+
+
+
+
+    // 百度坐标转高德坐标
+    function bd_decrypt(bd_lng, bd_lat) {
+        var X_PI = Math.PI * 3000.0 / 180.0;
+        var x = bd_lng - 0.0065;
+        var y = bd_lat - 0.006;
+        var z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * X_PI);
+        var theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * X_PI);
+        var gg_lng = z * Math.cos(theta);
+        var gg_lat = z * Math.sin(theta);
+        return { lng: gg_lng, lat: gg_lat }
+    }
+
+    /**
+ * 构造方法，防止调用者未声明此方法而报错
+ * 列表图片轮播
+ */
+    function onloadCallback() {
+        // 滚动插件
+        $(".swipslider").each(function () {
+            $(this).swipeslider();
+        })
+    }
+
+    function getUrlParameter(name) {
+        name = name.replace(/[]/, "\[").replace(/[]/, "\[").replace(/[]/, "\\\]");
+        var regexS = "[\\?&]" + name + "=([^&#]*)";
+        var regex = new RegExp(regexS);
+        var results = regex.exec(window.parent.location.href);
+        if (results == null) return ""; else {
+            return decodeURI(results[1]);
+        }
+    };
+</script>

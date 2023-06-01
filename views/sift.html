@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="user-scalable=no">
+  <title>网点首页</title>
+  <link rel="stylesheet" type="text/css" href="/css/sift.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="topDiv">
+      <div class="menu-po">
+        <div class="swiperDiv">
+          <div class="swiper-tab">
+            <div class="swiper-tab-item" onclick="menuClick('0')" id="swiperxz">
+              <span id="areaName">行政区划</span>
+              <div class="icon"></div>
+            </div>
+            <div class="swiper-tab-item" onclick="menuClick('2')" id="swipersx">
+              筛选条件
+              <div class="icon"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scrollPageDiv" id="scroll-page">
+      <div class="menu-if" id="sqdiv">
+        <div class="meun-txt" id="meuntxtxz">
+          <div class="menu-text-list">
+            <div class="menu-text-list-left over-auto" id="xzqh">
+              <div class="meun-city-txt">
+                <span>全部区域</span>
+                <div class="num">1842个</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="meun-txt over-auto" id="meuntxtsx" style="display: none;">
+          <div class="slidowntop" style="margin-top: 30px;">
+            <span>业态分类(国标)</span>
+            <div class="ck">
+              <span onclick="selectAll()">全选</span>
+              <span style="padding-left: 15px;" onclick="clearAll()">清空</span>
+            </div>
+          </div>
+          <div class="commanders" id="xsitem">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="btnDiv">
+      <div class="clearBtn" onclick="clearSelect()">不限条件</div>
+      <div class="sureBtn" onclick="submitSelect()">确定</div>
+    </div>
+
+  </div>
+  <div class="mask"></div>
+
+  <script src="/js/jquery-3.4.1.min.js"></script>
+  <script src="/js/static.js"></script>
+  <script type="text/javascript">
+    var divId = ''
+    var indIds = []
+    var data = JSON.parse(getUrlParameter('data'));
+    console.log('******************', data)
+    if (data.adminDiv != '') {
+      divId = data.adminDiv
+    }
+    if(data.indClass != '') {
+      indIds = data.indClass.split(",")
+    }
+    console.log('divId, indIds', divId, indIds)
+
+    var topSpace = 0
+
+    var num = 0;
+    this.getZdDot()
+    this.menuClick('0')
+
+    // 筛选导航栏事件
+    function menuClick(type) {
+      if (type == '0') {
+        // 行政
+        this.getXzArea()
+        $('#swiperxz').addClass('active');
+        $("#meuntxtxz").show();
+        if (divId == '') {
+          $('#all').addClass('btn-selected');
+        } else {
+          $('#' + divId).addClass('btn-selected');
+        }
+        $('#swipersq').removeClass('active');
+        $('#swipersx').removeClass('active');
+        $("#meuntxtsx").hide(); // 网点
+      } else if (type == '2') {
+        // 网点
+        $('#swipersx').addClass('active');
+        $("#meuntxtsx").show();
+        for (var i = 0; i < indIds.length; i++) {
+          $('#' + indIds[i]).addClass('btn-selected');
+        }
+        $('#swiperxz').removeClass('active');
+        $('#swipersq').removeClass('active');
+        $("#meuntxtxz").hide(); // 行政
+      }
+    }
+
+    //初始化行政区划数据
+    function getXzArea() {
+      var data = this.getCondition();
+      $.ajax({
+        url: staticurl + '/MarketEnt/queryMarketDiv?',
+        type: 'POST',
+        async: false,
+        data: data,
+        success: function (data) {
+          data = JSON.parse(data);
+          console.log('data', data)
+          var html = '';
+          for (var i = 0; i < data.length; i++) {
+            if (data[i].DICT_ID == '') {
+              html += '<div class="meun-city-txt" id="all" onclick="setDivId(\'' + data[i].NAME + '\', \'' + data[i].DICT_ID + '\')">';
+            } else {
+              html += '<div class="meun-city-txt" id=' + data[i].DICT_ID + ' onclick="setDivId(\'' + data[i].NAME + '\', \'' + data[i].DICT_ID + '\')">';
+            }
+            html += '<span>' + data[i].NAME + '</span>';
+            html += '<div class="num">' + data[i].num + '个</div>';
+            html += '</div>';
+          }
+          $("#xzqh").html(html);
+        },
+        error: function (err) {
+          console.log('err', err);
+        }
+      });
+    }
+
+
+    //筛选信息数据
+    function getZdDot() {
+      $.ajax({
+        url: staticurl + '/MarketPlan/getIndClass',
+        type: 'POST',
+        async: false,
+        success: function (data) {
+          data = JSON.parse(data);
+          var html = '';
+          for (var i = 0; i < data.length; i++) {
+            html += '<div class="btn" id=' + data[i].id + ' onclick="toselect(\'' + data[i].id + '\')">' + data[i].name + '</div>';
+          }
+          $("#xsitem").html(html);
+        },
+        error: function (err) {
+          console.log('err', err);
+        }
+      });
+    }
+
+    //行政区划点击
+    function setDivId(name, id) {
+      console.log('name, id', name, id)
+      // $('#areaName').html(name)
+
+      $('.meun-city-txt').removeClass('btn-selected');
+      if (id == '') {
+        $('#all').addClass('btn-selected');
+      } else {
+        $('#' + id).addClass('btn-selected');
+      }
+
+      divId = id;
+    }
+
+    // 筛选条件选中
+    function toselect(dictId) {
+      if ($('#' + dictId).hasClass("btn-selected")) {
+        $('#' + dictId).removeClass('btn-selected');
+        delitem(indIds, dictId);
+      } else {
+        $('#' + dictId).addClass('btn-selected');
+        if (indIds == '') {
+          indIds = []
+        }
+        indIds.push(dictId);
+
+      }
+      console.log('indIds', indIds);
+    }
+
+    // 筛选条件取消
+    function delitem(arr, text) {
+      for (let i = 0; i < arr.length; i++) {
+        if (text == arr[i]) {
+          arr.splice(i, 1);
+        }
+      }
+      console.log('indIds', indIds);
+    }
+
+    // 确定按钮
+    function submitSelect() {
+      console.log('divId ,indIds', divId, indIds);
+      window.location.href = pageUrl + '/views/map.html?data=' + JSON.stringify(this.getCondition());
+    }
+
+    // 全选
+    function selectAll() {
+      indIds = []
+      $('#xsitem .btn').addClass('btn-selected')
+      $("#xsitem .btn-selected").each(function () {
+        indIds.push($(this).attr("id"));
+      })
+      console.log('*****************************', indIds)
+    }
+
+    // 取消按钮
+    function clearAll() {
+      $('#xsitem .btn').removeClass('btn-selected')
+      indIds = []
+      console.log('#########', indIds)
+    }
+
+    // 不限条件
+    function clearSelect() {
+      $('#meuntxtxz .meun-city-txt').removeClass('btn-selected')
+      $('#all').addClass('btn-selected');
+      $('#xsitem .btn').removeClass('btn-selected')
+      divId = ''
+      indIds = []
+      console.log('#########', divId, indIds)
+    }
+
+
+    // 跳转网点详情页面
+    function toEntDetail(ent_id, ent_basic_id) {
+      console.log('ent_id, ent_basic_id', ent_id, ent_basic_id)
+      window.location.href = pageUrl + '/views/entDetail.html?ent_id=' + ent_id + '&ent_basic_id=' + ent_basic_id;
+    }
+
+
+    // var entName = getUrlParameter('keyword');
+    $('#searchVal').val(getUrlParameter('keyword'))
+
+    // 获取查询条件
+    function getCondition() {
+      console.log('indIds', indIds, divId)
+      //当前位置
+      var latitude = 31.998414;
+      var longitude = 118.785146
+      var data = {
+        adminDiv: divId,
+        indClass: indIds.join(','),
+        entName: '',
+        latitude: latitude,
+        longitude: longitude,
+      };
+      return data;
+    }
+
+    function getUrlParameter(name) {
+      name = name.replace(/[]/, "\[").replace(/[]/, "\[").replace(/[]/, "\\\]");
+      var regexS = "[\\?&]" + name + "=([^&#]*)";
+      var regex = new RegExp(regexS);
+      var results = regex.exec(window.parent.location.href);
+      if (results == null) return ""; else {
+        return decodeURI(results[1]);
+      }
+    };
+
+  </script>
+</body>
+
+</html>

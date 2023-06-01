@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>默认首页</title>
+    <script src="../js/jquery-1.12.4.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="../css/nodata.css">
+
+
+    <link rel="stylesheet" href="../css/swiper.min.css">
+    <script src="../js/swiper.min.js"></script>
+</head>
+
+<body>
+    <div>
+        <div class="main_box_ywmk">
+            <div class="main_title">
+                <span>
+                    <b>业务模块</b>
+                </span>
+            </div>
+            <div class="swiper_all">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <img src="../image/swiper01.png">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="../image/swiper02.png">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="../image/swiper03.png">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="../image/swiper04.png">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="../image/swiper01.png">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="../image/swiper04.png">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="../image/swiper01.png">
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-button-prev" onclick="goLeft()"></div>
+                <div class="swiper-button-next"></div>
+
+            </div>
+            <div class="left_bottom">
+                <span>正常指标数</span>
+                <br>
+                <span>异常指标数</span>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    //页面加载后执行
+    var num=0
+    window.onload = function () {
+        var mySwiper = new Swiper(".swiper-container", {
+            // loop: true, // 循环模式选项
+            // loopedSlides: 5, // 必设不然最后一张右边没元素
+            // loop: true,
+            // slidesPerView: 'auto',
+            // loopedSlides: 5,
+            // //自动播放
+            // autoplay: {
+            //     delay: 2000,
+            //     disableOnInteraction: false
+            // },
+            autoplay: false,
+            initialSlide: 2,
+            // 如果需要前进后退按钮
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            on: {
+                init: function (swiper) {
+                    //Swiper初始化了
+                    if (this.activeIndex == 2) {
+                        // this.allowSlidePrev = false
+                        // this.allowSlideNext = true
+                        num=2
+                    }
+                },
+                // slideChangeTransitionStart: function () {
+                //     // var num = mySwiper.activeIndex
+                //     // alert(num);
+                // },
+            },
+        });
+
+        mySwiper.on('init', function () {
+            console.log("索引值1111：" + mySwiper.activeIndex );
+            if(mySwiper.activeIndex==2){
+                mySwiper.allowSlidePrev=false
+                mySwiper.allowSlideNext=true
+            }
+            else if(mySwiper.activeIndex==4){
+                mySwiper.allowSlideNext=false
+                mySwiper.allowSlidePrev=true
+            }
+            else{
+                mySwiper.allowSlidePrev=true
+                mySwiper.allowSlideNext=true
+            }
+        });
+        mySwiper.on('slideChangeTransitionStart', function () {
+            console.log("索引值：" + mySwiper.activeIndex);
+            if (mySwiper.activeIndex == 2) {
+                // mySwiper.allowSlidePrev = false
+                // mySwiper.allowSlideNext = true
+                mySwiper.slideTo(5, 1000, false);//切换到第一个slide，速度为1秒
+            }
+            else if (mySwiper.activeIndex == 4) {
+                mySwiper.allowSlideNext = false
+                mySwiper.allowSlidePrev = true
+            }
+            else {
+                mySwiper.allowSlidePrev = true
+                mySwiper.allowSlideNext = true
+            }
+        });
+
+        // // 鼠标移入停止自动滚动
+        // $('.swiper-slide').mouseenter(function () {
+        //     mySwiper.autoplay.stop();
+        // })
+        // // 鼠标移出开始自动滚动
+        // $('.swiper-slide').mouseleave(function () {
+        //     mySwiper.autoplay.start();
+        // })
+    }
+
+    // function goLeft(){
+    //     if(num==2){
+    //         // alert("222")
+    //         mySwiper.slideTo(0, 1000, false);//切换到第一个slide，速度为1秒
+    //         console.log(mySwiper.activeIndex,"mySwiper.activeIndex")
+    //     }
+    // }
+</script>
+<style>
+    .main_title {
+        font-size: 16px;
+        padding-left: 6px;
+        padding-top: 16px;
+    }
+
+    .main_box_ywmk {
+        background: rgb(238, 234, 196);
+
+    }
+
+    .swiper_all {
+        overflow: hidden;
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .swiper-container {
+        overflow: visible !important;
+        height: 210px;
+        width: 20%;
+    }
+
+    .swiper-slide {
+        background: rgb(238, 234, 196);
+        margin: 0 0px 0 0;
+        text-align: center;
+    }
+
+    .swiper-slide-active {
+        margin-left: 0;
+        /* background: rgb(28, 71, 163); */
+        background: rgb(238, 234, 196);
+        width: 100%;
+        height: 300px;
+    }
+
+    .swiper-slide-active img {
+
+        transform: scale(1.5);
+    transition: all 0.2s ease-in 0s;
+        width: 100% !important;
+        /* height: 300px !important; */
+        margin-top: 0px !important;
+    }
+
+    .swiper-slide img {
+        height: 90%;
+        width: 85%;
+        margin-top: 10px;
+    }
+
+    .swiper-button-prev {
+        top: 115px;
+        left: 35px;
+        background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M0%2C22L22%2C0l4.2%2C4.2L8.4%2C22l17.8%2C17.8L22%2C44L0%2C22z'%20fill%3D'%23CCCCCC'%2F%3E%3C%2Fsvg%3E");
+    }
+
+    .swiper-button-next {
+        top: 115px;
+        right: 35px;
+        background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M27%2C22L5%2C44l-4.2-4.2L18.6%2C22L0.8%2C4.2L5%2C0z'%20fill%3D'%23CCCCCC'%2F%3E%3C%2Fsvg%3E");
+    }
+
+    .left_bottom {
+        font-size: 12px;
+        line-height: 30px;
+        margin-top: -65px;
+        padding-left: 20px;
+        padding-bottom: 50px;
+    }
+
+    .swiper-slide-prev img {
+        float: left !important;
+    }
+
+    .swiper-slide-next img {
+        float: right !important;
+    }
+</style>

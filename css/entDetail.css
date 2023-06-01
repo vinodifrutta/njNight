@@ -1,0 +1,319 @@
+html {
+  color: #000;
+  background: #fff;
+  overflow-y: scroll;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+html * {
+  outline: 0;
+  -webkit-text-size-adjust: none;
+  -webkit-tap-highlight-color: rgba(0,0,0,0)
+}
+
+body {
+	margin: 0;
+	background: #ffffff;
+}
+
+.container {
+  padding: 32px;
+}
+
+.title .active-title {
+  font-size: 2.6em;
+  font-weight: bold;
+  color: #000;
+  background: #fff;
+  padding: 32px 32px 0 32px;
+}
+
+.title{
+  line-height: 60px;
+}
+/* .title {
+  font-size: 2.6em;
+  font-weight: bold;
+  color: #000; 
+} */
+
+.thumb-img {
+  width: 100%;
+  height: 410px;
+  margin: 30px 0;
+}
+
+.cont {
+  font-size: 2.2em;
+  line-height: 1.8em;
+  /* text-indent: 2em; */
+  color: #232323;
+}
+
+.info, .veget-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 32px 0;
+}
+
+.info .item {
+  width: 50%;
+  font-size: 2.1em;
+  color: #4b4b4b;
+}
+
+.veget-title .item {
+  font-size: 2.1em;
+}
+
+.item-title {
+  color: #00ace6;
+}
+
+.item-cont {
+  color: #2b2b2b;
+}
+
+.info .item>div {
+  line-height: 60px;
+}
+
+.little-img {
+	height: 34px;
+	width: 34px;
+	margin-left: 10px;
+}
+
+.tipDiv {
+  display: none;
+  font-size: 2em;
+  text-align: center;
+  margin-top: 50%;
+}
+
+.veget {
+  margin-top: 70px;
+}
+
+.table-header,.table-cont {
+  display: flex;
+  justify-content: space-between;
+  font-size: 2.2em;
+  color: #00ace6;
+  text-align: center;
+  border-top: 1px solid #b5b5b5;
+  border-left: 1px solid #b5b5b5;
+}
+
+.table-cont {
+  color: #2b2b2b;
+  border-top: 0px solid #b5b5b5;
+}
+
+.veget .th,.veget .td {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  border-bottom: 1px solid #b5b5b5;
+  border-right: 1px solid #b5b5b5;
+  font-weight: bold;
+}
+
+.veget .td {
+  font-weight: 500;
+}
+
+.th1, .td1 {
+  width: 25%;
+}
+
+.th2, .td2 {
+  width: 35%;
+}
+
+.th3, .td3 {
+  width: 20%;
+}
+
+.th4, .td4 {
+  width: 20%;
+}
+
+.td>img {
+  width: 50px;
+  height: 50px;
+}
+
+.market-btn {
+  width: 200px;
+  height: 80px;
+  background-color: #0ca0e0;
+  color: #fff;
+  font-size: 2em;
+  line-height: 78px;
+  border-radius: 40px;
+  text-align: center;
+}
+
+.mask {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background: rgba(0,0,0,0.6);
+  z-index: 99;
+  display: none;
+}
+
+.echartDiv {
+  display: block;
+  position: fixed;
+  top: 20%;
+  background: #fff;
+  z-index: 100;
+  width: 90%;
+  left: 5%;
+  display: none;
+  height: 56%;
+  border-radius: 12px;
+}
+
+.echart-title {
+  text-align: center;
+  font-size: 2.2em;
+  margin: 32px;
+  font-weight: bold;
+}
+
+.closeDiv {
+  display: flex;
+  justify-content: flex-end;
+  margin: 32px;
+}
+
+.close {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  line-height: 34px;
+}
+
+.close-icon {
+  display: inline-block;
+  width: 30px;
+  height: 4px;
+  background: #333;
+  transform: rotate(45deg);
+}
+
+.close-icon::after {
+  content: '';
+  display: block;
+  width: 30px;
+  height: 4px;
+  background: #333;
+  transform: rotate(-90deg);
+}
+
+.dateBtns {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.dateBtns .item-btn {
+  font-size: 2.4em;
+  color: #585858;
+  font-weight: bold;
+  margin: 30px;
+}
+
+.dateBtns .item-btn.active {
+  color: #0ca0e0;
+}
+
+.inputs {
+  height: 100px;
+  line-height: 100px;
+      display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.itemInputDiv {
+  display: flex;
+  align-items: center;
+}
+
+.itemInputDiv .item-input {
+  /* width: 50%; */
+  text-align: center;
+}
+
+.itemInputDiv input {
+  /* padding-left: 50px; */
+  height: 80px;
+  font-size: 2.4em;
+  outline: none;
+  border: none;
+  line-height: 80px;
+  background: #fff;
+}
+
+.itemInputDiv>input:focus {
+	outline: none;
+}
+
+.itemInputDiv>input::-webkit-input-placeholder {
+	padding-top: 2px;
+	opacity: 0.5;
+}
+
+select.selector:focus {
+  outline:none;
+}
+			
+.selector {
+  font-size: 2.5em;
+  margin: 0.7em 0.1em;
+  padding: 0.2em 1em 0.2em 0.2em;
+  border: solid 1px #b1b1b1;
+  width: 4.5em;
+}
+
+.selector option {
+  font-size: 0.3em;
+}
+
+select {
+  border: none;
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background: url("http://ourjs.github.io/static/2015/arrow.png") no-repeat scroll 3.8em center transparent;
+}
+
+select::-ms-expand {
+  display: none; 
+}
+
+.tip {
+  font-size: 2.2em;
+}
+
+.input-left {
+  display: flex;
+  align-items: center;
+  width: calc(100% - 130px);
+}
+
+.sureBtn {
+  width: 130px;
+  font-size: 2.2em;
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+}

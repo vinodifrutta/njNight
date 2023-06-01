@@ -1,0 +1,268 @@
+/* * {
+    margin: 0;
+    padding: 0;
+    list-style: none; 
+    font-family: Microsoft YaHei; 
+    -webkit-box-sizing: border-box; 
+    -moz-box-sizing: border-box; 
+    box-sizing: border-box; 
+}
+html {
+    width: 100%;
+    height: 100%;
+    font-size: 625%;
+} 
+body {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0; 
+} */
+
+html {
+    color: #000;
+    background: #eeeeee;
+    overflow-y: scroll;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+  
+  html * {
+  
+    outline: 0;
+    -webkit-text-size-adjust: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0)
+  }
+  
+  body {
+      margin: 0;
+      background: #eeeeee;
+  }
+
+/* body{ top: 0; height:2.25rem; left: 0; right: 0; padding: 0.15rem 0.1rem 0.1rem 0.1rem;background-color: #FFF; } */
+/* .home-bac{ position: relative; top: 0; height:100%; left: 0; right: 0;  background:  url(../../image/bac.png); background-size: 100% 100%; } */
+
+.main {
+    position: absolute;
+    top: 0rem;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 32px;
+    overflow-y: auto;
+    background-color: #fff;
+
+}
+.main > .title {
+    font-size: 2.6em;
+    font-weight: bold;
+    color: #000; 
+    margin-bottom: 32px;
+}
+
+.main > .pic {
+    background-color: #ccc;
+    border-radius: 6px;
+    width: 100%;
+
+}
+.main > .detail {
+    font-size: 2.3em;
+    font-family: Source Han Sans CN;
+    font-weight: 400;
+    color: #727272;
+    opacity: 1;
+    margin-top: 32px;
+    line-height: 60px;
+}
+.main > .title-small {
+    margin-top: 60px;
+    padding-top: 20px;
+    color: #000;
+    font-family: Source Han Sans CN;
+    font-weight: 400;
+    line-height: 50px;
+    /* color: #353535; */
+    font-size: 2.6em;
+    font-weight: bold;
+    padding-bottom: 32px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid #969696;
+
+ 
+}
+.main > .title-small-detail { 
+    border-bottom: 1px solid #eeeeee;
+    display: flex;
+    Flex-direction: row;
+    justify-content: flex-start;
+    color: #a8a8a8;
+    padding-bottom:20px ;
+}
+
+.main > .title-small-detail >a {
+width: 2rem;
+height: 2rem;
+}
+.main > .title-small-detail > .title-small-detail-icon1 {
+    float: left;
+    margin-right: 0.1rem;
+    width: 40px;
+    height:40px;
+    vertical-align: middle;
+    background: url(../../image/time1.png) no-repeat scroll top center;
+    background-size: 100% 100%;
+    overflow：hidden;
+    margin-top: 25px;
+}
+.main > .title-small-detail > .title-small-detail-text {
+    float: left;
+    font-size: 2.3em;
+    font-family: MicrosoftYaHei;
+    /* line-height: 80px; */
+    color: #a8a8a8;
+    z-index:1;
+    width: calc(100% - 0.45rem);
+    position: relative;
+    overflow：hidden;
+    margin-left: 20px;
+    white-space:pre-wrap;
+    padding-top: 20px;
+}
+.main > .title-small-detail > .title-small-detail-text>a:link {
+    width: 100%;
+    height: 20px;
+    z-index:999;
+    position:absolute
+    font-size: 0.11rem;
+    font-family: MicrosoftYaHei;    
+    /* line-height: 0.1rem; */
+    color: #a8a8a8;
+    text-decoration:none !important;
+    
+}
+.main > .title-small-detail > .title-small-detail-text>.link1 {
+    color: #a8a8a8;
+}
+.main > .title-small-detail > .title-small-detail-icon2 {
+    float: left;
+    margin-top: 0.03rem;
+    margin-right: -10px;
+    width: 45px;
+    height: 40px;
+    background: url(../../image/addr1.png) no-repeat scroll top center;
+    background-size: 100% 100%;
+    overflow：hidden;
+    margin-top: 25px;
+}
+.main > .title-small-detail > .title-small-detail-icon3 {
+    float: left;
+    margin-top: 0.03rem;
+    margin-right: 0.1rem;
+    width: 45px;
+    height: 40px;
+    background: url(../../image/dhhm.png) no-repeat scroll top center;
+    background-size: 100% 100%;
+    overflow：hidden;
+    margin-top: 25px;
+}
+.main > .title-small-detail > .title-small-detail-right {
+    float: right;
+    margin-right: 10px;
+
+    width: 45px;
+    height: 40px;
+    background: url(../../image/sywd-750_10.png) no-repeat scroll top center;
+    background-size: 100% 100%;
+    overflow：hidden;
+    margin-top: 25px;
+
+
+}
+.main > .title-small-detail > .title-small-detail-right >a:link{
+    float: right;
+    /* margin-right: 0.1rem; */
+    width: 100%;
+    height: 40px;
+    overflow：hidden;
+
+
+}
+.main > .title-small-detail > .title-small-detail-phone {
+    float: right;
+    margin-right: 10px;
+    margin-top: 25px;
+    width: 45px;
+    height: 40px;
+    background: url(../../image/dh.png) no-repeat scroll top center;
+    background-size: 100% 100%;
+    overflow：hidden;
+}
+.main > .title-small-detail > .title-small-detail-phone>a:link {
+    float: right;
+    /* margin-right: 0.1rem; */
+    width: 100%;
+    height: 40px;
+    overflow：hidden;
+}
+
+.main > .labels {
+    height: 50px;
+    margin-top: 0.1rem;
+    margin-bottom: 0.1rem;
+}
+.main > .labels > .label {
+    /* height: 100%; */
+    float: left;
+    line-height: 49px;
+    width: auto;
+    padding: 0 15px 0 15px;
+    margin-right: 10px;
+    /* line-height: 0.15rem; */
+    border-radius: 50px;
+    font-size: 1.6em;
+    color: #fff;
+    /* margin-top: 30px; */
+    margin-bottom: 20px;
+    /* padding: 3px; */
+    overflow：hidden;
+    
+}
+.main > .labels > .label.c1 {
+    background-color: #5473a8;
+}
+.main > .labels > .label.c2 {
+    background-color: #ff5b73;
+}
+.main > .labels > .label.c3 {
+    background-color: #ff935b;
+}
+
+
+
+
+
+
+ .image{ height: 500px; font-size: 0; margin-top: 32    px;
+   }
+.image > img{ height: 100%; width:100%;  }
+ .image > .swipslider{ height: 100%; width: 100%; padding-top: 0 !important;  }
+.image > .swipslider img{ height: 100%; width: 100%; }
+
+.sw-next-prev {
+display: none
+}
+.sw-bullet li{
+ height: 20px !important;
+    width: 20px !important;  
+}
+
+
+
+
+
+
+
+

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>默认首页</title>
+    <script src="../js/jquery-1.12.4.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="../css/nodata.css">
+    <link rel="stylesheet" href="../css/swiper.min.css">
+    <script src="../js/swiper.min.js"></script>
+
+    <style>
+
+    </style>
+</head>
+
+<body>
+
+
+
+    <div class="box">
+        <!-- Swiper -->
+    <div class="swiper-container" style="width: 1195px;">
+        <!-- Add Arrows -->
+      <div style="position: absolute;top: 0;left: 0; height: 100%;width: 45px;"><div class="swiper-button-prev"></div></div>
+          <div class="swiper-wrapper box1">
+              <div class="swiper-slide box2">Slide 1</div>
+              <div class="swiper-slide box2">Slide 2</div>
+              <div class="swiper-slide box2">Slide 3</div>
+              <div class="swiper-slide box2">Slide 4</div>
+              <div class="swiper-slide box2">Slide 5</div>
+              <!-- <div class="swiper-slide box2">Slide 5</div>
+              <div class="swiper-slide box2">Slide 5</div> -->
+          </div>
+      <!-- Add Arrows -->
+      <div><div class="swiper-button-next" style="position: absolute;top: 0;right: 0; height: 100%;width: 45px;"></div></div>  
+    </div>
+  </div>
+
+
+
+</body>
+
+<script>
+    //页面加载后执行
+    window.onload = function () {
+        // var mySwiper = new Swiper('.swiper-container', {
+        //     // direction: 'vertical', // 垂直切换选项
+        //     loop: true, // 循环模式选项
+        //     // 分页器小圆点
+        //     pagination: {
+        //         el: '.swiper-pagination',
+        //         clickable: true,
+        //     },
+        //     autoplay: {
+        //         delay: 2000, //自动轮播时间
+        //         disableOnInteraction: true  //用户操作后不轮播
+        //     },
+        //     // 如果需要前进后退按钮
+        //     navigation: {
+        //         nextEl: '.swiper-button-next',
+        //         prevEl: '.swiper-button-prev',
+        //     },
+        //     // 如果需要滚动条
+        //     // scrollbar: {
+        //     //   el: '.swiper-scrollbar',
+        //     // },
+        // })
+
+
+
+
+        // var banner = new Swiper('.swiper-container', {
+        //     loop: true,
+
+        //     pagination: '.swiper-pagination',
+        //     effect: 'coverflow',
+        //     grabCursor: true,
+        //     centeredSlides: true,
+        //     slidesPerView: 'auto',
+        //     coverflow: {
+        //         rotate: 0, //slide做3d旋转时Y轴的旋转角度。默认50。
+        //         depth: 115, //slide的位置深度。值越大z轴距离越远，看起来越小。 默认100。
+        //         slideShadows: false //开启slide阴影。默认 true。
+        //     }
+        // })
+
+
+        // var mySwiper = new Swiper('.swiper-container',{
+        // 		autoplay:3000,
+        // 		speed:1000,
+        // 		autoplayDisableOnInteraction : false,//用户操作swiper之后，是否禁止autoplay
+        // 		loop:true,
+        // 		centeredSlides : true,
+        // 		slidesPerView:2,
+        // 		pagination : '.swiper-pagination',
+        // 		paginationClickable:true,//点击分页器是否会切换
+        // 		prevButton:'.swiper-button-prev',
+        // 		nextButton:'.swiper-button-next',
+        // 		onInit:function(swiper){//回调函数，初始化后执行。
+        // 			swiper.slides[2].className="swiper-slide swiper-slide-active";//第一次打开不要动画
+        // 			},
+        // 	}) 
+
+        var swiper = new Swiper('.swiper-container', {
+            loop: true,
+            slidesPerView: 'auto',
+            loopedSlides: 5,
+      slidesPerView: 5,
+      spaceBetween: 25,
+      slidesPerGroup: 5,
+      loopFillGroupWithBlank: true,
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+    });
+
+        // rotate :number,  //侧转角度（正值凹陷）、（负值凸出）
+        //   stretch : number, //每个slide之间拉伸值（正值紧贴）、（负值远离）
+        //   depth : number,  // 正值越大slide为远景图（可负值）
+        //   modifier : number, //depth和rotate和stretch的倍率，值越大这三个参数的效果越明显
+        //   shadows : true   //是否使用阴影
+
+
+    }
+
+    function gonext() {
+
+
+    }
+</script>
+<style>
+    .main_box_ywmk {
+        display: flex;
+        align-items: center;
+        background: #ffffff;
+        border-radius: 5px;
+        height: 40%;
+        width: 99.5%;
+        margin-top: 5px;
+        margin-left: 10px;
+        overflow: hidden;
+        /* white-space:nowrap;
+	    	display:inline-block; */
+    }
+
+    .main_chart {
+        /* float:left; */
+        width: 18%;
+        height: 230px;
+        margin-left: 10px;
+        background-color: aquamarine;
+
+    }
+
+    .main_chart_center {
+        width: 22%;
+        height: 280px;
+        margin-left: 10px;
+        background-color: rgb(153, 255, 127);
+    }
+
+    .chart_flex {
+        display: flex;
+        width: 90%;
+        align-items: center;
+    }
+
+    .main_chart_cube {}
+
+    html,
+    body {
+      position: relative;
+      height: 100%;
+    }
+
+    body {
+      background: #eee;
+      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #000;
+      margin: 0;
+      padding: 0;
+    }
+
+    .swiper-container {
+      width: 100%;
+      height: 100%;
+      position: static;
+    }
+
+    .swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: #fff;
+
+      /* Center slide text vertically */
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+    }
+    .swiper-button-next, .swiper-button-prev{
+        color: #666;
+    }
+    .swiper-button-next:hover{
+        color: #0ba95f;
+    }
+    .swiper-button-prev:hover{
+        color: #0ba95f;
+    }
+    /* ↑ 以上为swiper demo默认样式 */
+    .box{
+        width: 100%;
+        height: 262px;
+        position: relative;
+        background-color:#FFF;
+        margin:150px auto 0;
+    }
+    .box1{
+        box-sizing: content-box!important;
+    }
+    .box2{
+        /* width: 20%!important; */
+        background-color: pink;
+    }
+</style>

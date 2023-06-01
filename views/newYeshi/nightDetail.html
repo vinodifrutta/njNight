@@ -1,0 +1,200 @@
+<!doctype html>
+<!--告知浏览器文档所使用的HTML规范-->
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <!-- <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no"> -->
+    <meta name="viewport" content="user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+      <!-- 清除缓存 -->
+      <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+      <meta http-equiv="Pragma" content="no-cache" />
+      <meta http-equiv="Expires" content="0" />
+    <title>景点详情</title>
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/json2.js"></script>
+    <script src="../../js/static.js?v=1"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/newYeshi/nightDetail.css?v=3">
+
+
+    <link rel="stylesheet" type="text/css" href="../../js/jQuerySwipeslider/dist/swipeslider.css">
+    <script type="text/javascript" src="../../js/jQuerySwipeslider/dist/swipeslider.min.js"></script>
+
+    <style>
+    </style>
+    　　
+</head>
+
+　　
+
+<body>
+    <div class="main" id="dataList">
+        <!-- <div class="title">河西城市生态公园 </div>
+        <div class="labels">
+            <div class="label c1">建邺区</div>
+            <div class="label c2">文化艺术活动殿堂</div>
+            <div class="label c3">夜游</div>
+        </div>
+        <div class="pic"></div>
+        <div class="detail">文化艺术活动的殿堂</div>
+        <div class="title-small">营业信息</div>
+        <div class="title-small-detail">
+            <div class="title-small-detail-icon1"></div>
+            <div class="title-small-detail-text">以演出公告为准</div>
+        </div>
+        <div class="title-small-detail">
+            <div class="title-small-detail-icon2"></div>
+            <div class="title-small-detail-text">南京市建邺区吴侯街与江东南路交叉口东南100米</div>
+            <div class="title-small-detail-right"></div>
+        </div>
+        <div class="title-small-detail">
+            <div class="title-small-detail-icon3"></div>
+            <div class="title-small-detail-text">025-84797961</div>
+            <div class="title-small-detail-phone"></div>
+        </div> -->
+    </div>
+
+
+</body>
+
+</html>
+
+
+<script>
+    
+    var sort = getUrlParameter('sort');
+    var type = getUrlParameter('type');
+    console.log(sort, "sort");
+    if ('type' == 1) {
+      saveAsk('夜之金陵商户详情');
+    } else {
+      saveAsk('热门街区商户详情');
+    }
+    window.onload = function () {
+        getListData()
+        onloadCallback()
+    }
+
+    //加载列表
+    function getListData() {
+        $.ajax({
+            url: staticurl + '/api/bBusStreet/queryEntById',
+            type: 'GET',
+            async: false,
+            data: {
+                id: sort
+            },
+
+            success: function (res) {
+                var josndata = []
+                josndata.push(JSON.parse(res));
+                var newList = josndata[0].data
+                var map = bd_decrypt(newList.longitude, newList.latitude)
+                var pic = newList.detailsImgUrl.split(',')
+
+                var html = '';
+                html += '<div  class="title">' + newList.merchantTitle + '</div>';
+
+                if (type == 1) {
+                    html += '<div class="labels">';
+                    html += '<div  class="label c1">' + newList.areaName + '</div>';
+                    html += '<div  class="label c2">' + newList.merchantLabel + '</div>';
+                    if (newList.merchantType == 1) {
+                        html += '<div class="label c3">夜游</div>'
+                    }
+                    if (newList.merchantType == 2) {
+                        html += '<div class="label c3">夜购</div>'
+                    }
+                    if (newList.merchantType == 3) {
+                        html += '<div class="label c3">夜食</div>'
+                    }
+                    if (newList.merchantType == 4) {
+                        html += '<div class="label c3">夜读</div>'
+                    }
+                    if (newList.merchantType == 5) {
+                        html += '<div class="label c3">夜宿</div>'
+                    }
+                    if (newList.merchantType == 6) {
+                        html += '<div class="label c3">夜建</div>'
+                    }
+                    if (newList.merchantType == 7) {
+                        html += '<div class="label c3">夜娱乐</div>'
+                    }
+                    html += `</div>`
+                }
+                html += `<div class="image"><div id="full_feature" class="swipslider"><ul class="sw-slides">`
+                for (var i = 0; i < pic.length; i++) {
+                    html += ` <li class="sw-slide"><img class="pic" src=`+ pic[i] + `></img></li>`
+                }
+                html += `</ul></div></div>`
+                html += `   <div  class="detail">` + newList.merchantIntroduce + `</div>
+              <div  class="title-small">营业信息</div>
+                <div  class="title-small-detail">
+                <div  class="title-small-detail-icon1"></div>
+              <div class="title-small-detail-text">` + newList.merchantOpeningHours + `</div>
+             </div>
+                <div class="title-small-detail">
+               <div class="title-small-detail-icon2"></div>
+             <div class="title-small-detail-text" > <a class="link1" href="https://uri.amap.com/marker?position=` + map.lng + `,` + map.lat + `&name=` + newList.merchantTitle + `">`+ newList.merchantAddress + `   </a></div>
+           
+                <div class="title-small-detail-right">  <a href="https://uri.amap.com/marker?position=` + map.lng + `,` + map.lat + `&name=` + newList.merchantTitle + `"/></div>
+            </div>
+                 <div class="title-small-detail">
+              <div class="title-small-detail-icon3"></div>`
+
+                if (newList.merchantPhone == ' ' || newList.merchantPhone == null || newList.merchantPhone == '暂无电话'||newList.merchantPhone == '' || newList.merchantPhone == '待定') {
+                    html += `<div class="title-small-detail-text" >暂无电话</div>`
+                } 
+                else if(
+                    newList.merchantPhone.length>13 
+                ){
+                    html += `<div class="title-small-detail-text" >` + newList.merchantPhone + `</div>`
+                    html += ` <div class="title-small-detail-phone"></div>`
+                }
+                else {
+                    html += `<div class="title-small-detail-text" ><a href="tel:` + newList.merchantPhone + `">` + newList.merchantPhone + `</a></div>`
+                    html += ` <div class="title-small-detail-phone"><a href="tel:` + newList.merchantPhone + `"/></div>`
+                }
+                html += ` </div>`
+                $("#dataList").append(html)
+            },
+            error: function (err) {
+                console.log('err', err);
+            }
+        });
+    }
+    // 百度坐标转高德坐标
+    function bd_decrypt(bd_lng, bd_lat) {
+        var X_PI = Math.PI * 3000.0 / 180.0;
+        var x = bd_lng - 0.0065;
+        var y = bd_lat - 0.006;
+        var z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * X_PI);
+        var theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * X_PI);
+        var gg_lng = z * Math.cos(theta);
+        var gg_lat = z * Math.sin(theta);
+        return { lng: gg_lng, lat: gg_lat }
+    }
+
+    /**
+     * 构造方法，防止调用者未声明此方法而报错
+     * 列表图片轮播
+     */
+    function onloadCallback() {
+        // 滚动插件
+        $(".swipslider").each(function () {
+            $(this).swipeslider();
+        })
+    }
+    function getUrlParameter(name) {
+        name = name.replace(/[]/, "\[").replace(/[]/, "\[").replace(/[]/, "\\\]");
+        var regexS = "[\\?&]" + name + "=([^&#]*)";
+        var regex = new RegExp(regexS);
+        var results = regex.exec(window.parent.location.href);
+        if (results == null) return ""; else {
+            return decodeURI(results[1]);
+        }
+    };
+
+</script>

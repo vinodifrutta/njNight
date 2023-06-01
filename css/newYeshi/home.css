@@ -1,0 +1,61 @@
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none; /* reset */
+    font-family: Microsoft YaHei; /* 字体 */
+    -webkit-box-sizing: border-box; /* 边框不增加元素高宽 */
+    -moz-box-sizing: border-box; /* 边框不增加元素高宽 */
+    box-sizing: border-box; /* 边框不增加元素高宽 */
+}
+html {
+    width: 100%;
+    height: 100%;
+    font-size: 625%;
+} /* 1rem = 100px */
+body {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0; /* position: absolute;  line-height: 0;*/
+}
+
+body {
+    position: relative;
+    background: url(../../image/bac.png) no-repeat scroll top center;
+    background-size: 100% 100%;
+}
+/* .home-bac{ position: relative; top: 0; height:100%; left: 0; right: 0;  background:  url(../../image/bac.png); background-size: 100% 100%; } */
+.home-bac > .home-center {
+    position: absolute;
+    top: 55%;
+    left: 20%;
+}
+.home-bac > .home-center > .home-up {
+    width: 2rem;
+    height: 0.7rem;
+}
+.home-bac > .home-center > .home-up > .home-up-text {
+    float: right;
+    color: rgb(240, 246, 252);
+    font-size: 0.22rem;
+    font-family: Source Han Sans CN;
+    font-weight: 400;
+    /* line-height: 56px; */
+    color: #ffffff;
+}
+.home-bac > .home-center > .home-up > .home-up-pic {
+    float: left;
+    width: 0.36rem;
+    height: 0.36rem;
+    background: url(../../image/home-up.png);
+    background-size: 100% 100%;
+}
+.home-bac > .home-center > .home-up > .home-bottom-pic {
+    float: left;
+    width: 0.36rem;
+    height: 0.36rem;
+    background: url(../../image/home-bottom.png);
+    background-size: 100% 100%;
+}

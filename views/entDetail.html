@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="user-scalable=no">
+  <title>网点详情</title>
+  <link rel="stylesheet" type="text/css" href="/css/entDetail.css">
+  <script src="/js/echarts.min.js"></script>
+</head>
+
+<body>
+  <div class="container" id="container">
+    <div class="title" id="entTitle"></div>
+    <img class="thumb-img" id="entImg" src="">
+    <div class="cont">
+      <span id="entCont"></span>
+    </div>
+    <div class="info">
+      <div class="item">
+        <div class="item-title">基本信息</div>
+        <div class="item-cont">
+          <span>占地面积:</span>
+          <span id="entZdmj"></span>
+        </div>
+        <div class="item-cont">
+          <span>总建筑面积:</span>
+          <span id="entZjzmj"></span>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-title">联系方式</div>
+        <div class="item-cont">
+          <span>电话:</span>
+          <span id="entPhone"></span>
+        </div>
+        <div class="item-cont">
+          <span>地址:</span>
+          <span id="entAddr"></span>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="market-btn" id="marketBtn">
+      商场导览
+    </div> -->
+    <div class="veget" id="vegetInfo">
+      <div class="veget-title">
+        <div class="item" style="color: #4b4b4b;font-weight: bold;">时点菜价</div>
+        <div class="item" style="color: #00ace6;">单位:元/斤</div>
+      </div>
+      <div class="veget-table">
+        <div class="table-header">
+          <div class="th th1">日期</div>
+          <div class="th th2">产品</div>
+          <div class="th th3">价格</div>
+          <div class="th th3">走势</div>
+        </div>
+        <div id="table-conts">
+          <!-- <div class="table-cont">
+            <div class="td td1">18-08-21</div>
+            <div class="td td2">马铃薯</div>
+            <div class="td td3">3.40</div>
+            <div class="td td3">
+              <img bindtap="toTrend" src="https://site.sumexsoft.com/images/wechat/dot/sdcj2-750_11.png">
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="tipDiv" id="noTip">请求出错，暂无数据！</div>
+  <div class="mask"></div>
+  <div class="echartDiv" id="echarts">
+    <div class="closeDiv">
+      <div class="close" onclick="toClose()">
+        <span class="close-icon"></span>
+      </div>
+    </div>
+    <div class="echart-title" id="echartTitle"></div>
+    <div class="dateBtns">
+      <div class="item-btn month" onclick="getTime('month')">近一个月</div>
+      <div class="item-btn halfyear" onclick="getTime('halfyear')">近半年</div>
+      <div class="item-btn year" onclick="getTime('year')">近一年</div>
+    </div>
+    <div id="main" style="margin-left: 5%;width: 90%;height:600px;"></div>
+  </div>
+
+  <script src="/js/jquery-3.4.1.min.js"></script>
+  <script src="/js/alert.js"></script>
+  <script src="/js/static.js"></script>
+  <script type="text/javascript">
+    var clickType = '';
+    var timeS = '';
+    var timeE = '';
+    var vipId = '';
+    var dictId = '';
+    var topSpace = 0;
+    var ent_id = getUrlParameter('ent_id');
+    var ent_basic_id = getUrlParameter('ent_basic_id');
+    console.log('ent_id, ent_basic_id', ent_id, ent_basic_id)
+    getEntDetail(ent_id, ent_basic_id);
+
+    // 设施数量数据初始化
+    function getEntDetail(ent_id, ent_basic_id) {
+      console.log('ent_id, ent_basic_id', ent_id, ent_basic_id)
+      $.ajax({
+        url: staticurl + '/XcxEnt/queryMarketInfo',
+        type: 'POST',
+        async: false,
+        data: {
+          id: ent_id,
+          entBasicId: ent_basic_id,
+          date: '2019-03-01'
+        },
+        success: function (res) {
+          var res = JSON.parse(res);
+          console.log('res', res)
+          $('#entTitle').html(res.info.ent_name);
+          $("#entImg").attr("src", res.info.thumb);
+          if (res.info.ent_scope != '') {
+            $("#entCont").html(res.info.ent_scope);
+          } else {
+            $("#entCont").html('');
+          }
+          if (res.info.bus_area != '') {
+            $("#entZdmj").html(res.info.bus_area);
+            $("#entZjzmj").html(res.info.bus_area);
+          } else {
+            $("#entZdmj").html('-');
+            $("#entZjzmj").html('-');
+          }
+          if (res.info.contact != '') {
+            $("#entPhone").html(res.info.contact);
+          } else {
+            $("#entPhone").html('-');
+          }
+          if (res.info.address != '') {
+            if (res.info.address.length >= 8) {
+              $("#entAddr").html(res.info.address.substring(0, 8));
+            } else {
+              $("#entAddr").html(res.info.address);
+            }
+            $("#entAddr").append('<a href="https://uri.amap.com/marker?position=' + res.info.longitude + ',' + res.info.latitude + '&name=' + res.info.ent_name +'"><img class="little-img" src="https://site.sumexsoft.com/images/wechat/dot/sywd-750_10.jpg"/></a>');
+          } else {
+            $("#entAddr").html('-')
+          }
+
+          if (res.veget.length == 0) {
+            $("#vegetInfo").css('display', 'none');
+          } else {
+            var html = '';
+            for (var i = 0; i < res.veget.length; i++) {
+              html +=`<div class="table-cont">
+                        <div class="td td1">`+ res.veget[i].date +`</div>
+                        <div class="td td2">`+ res.veget[i].name +`</div>
+                        <div class="td td3">`+ res.veget[i].price +`</div>
+                        <div class="td td3" onclick="toEchart('`+ res.info.vip_id +`','`+ res.veget[i].date +`','`+ res.veget[i].dict_id +`','` + res.veget[i].name +`')">
+                          <img bindtap="toTrend" src="https://site.sumexsoft.com/images/wechat/dot/sdcj2-750_11.png">
+                        </div>
+                      </div>`;
+            }
+            $("#vegetInfo").append(html)
+          }
+        },
+        error: function (err) {
+          console.log('err', err);
+          $('#container').html('')
+          $('#noTip').css('display', 'block');
+        }
+      });
+    }
+
+    function getTime(dateType) {
+      clickType = dateType;
+      console.log('clickType', clickType)
+      $('.item-btn').removeClass('active');
+      $('.dateBtns .' + dateType).addClass('active');
+
+      let nowYear = new Date().getFullYear()
+      let nowMonth = new Date().getMonth() + 1
+      if (nowMonth < 10) {
+        nowMonth = '0' + nowMonth
+      }
+      let nowDay = new Date().getDate()
+      if (nowDay < 10) {
+        nowDay = '0' + nowDay
+      }
+      let nowDate = nowYear + '-' + nowMonth + '-' + nowDay
+      let chooseDate = ''
+      if (clickType == 'month') {
+        // 近一个月
+        nowMonth = nowMonth - 1;
+        if (nowMonth <= 0) {
+          nowYear = nowYear - 1;
+          nowMonth = nowMonth + 12;
+        }
+        if (nowMonth < 10) {
+          nowMonth = '0' + nowMonth;
+        }
+        chooseDate = nowYear + '-' + nowMonth + '-' + nowDay
+      } else if (clickType == 'halfyear') {
+        // 近半年
+        for (let i = 0; i < 6; i++) {
+          nowMonth = nowMonth - 1;
+          if (nowMonth <= 0) {
+            nowYear = nowYear - 1;
+            nowMonth = nowMonth + 12;
+          }
+          if (nowMonth < 10) {
+            nowMonth = '0' + nowMonth;
+          }
+        }
+        chooseDate = nowYear + '-' + nowMonth + '-' + nowDay
+
+      } else if (clickType == 'year') {
+        // 近一年
+        chooseDate = (nowYear-1) + '-' + nowMonth + '-' + nowDay
+      }
+      console.log('**********', nowDate, chooseDate)
+
+      let startTime = new Date(chooseDate);
+      let endTime = new Date(nowDate);
+      let type = '';
+      if (clickType == 'month') {
+        type = '0'
+      } else if (clickType == 'halfyear' || clickType == 'year') {
+        type = '1'
+      }
+
+      console.log('startTime', startTime, endTime)
+      let num = 0;
+      if (type == '0') {
+        num = (endTime - startTime) / (1000 * 60 * 60 * 24);
+      } else if (type == '1') {
+        num = (endTime.getYear() * 12 + endTime.getMonth()) - (startTime.getYear() * 12 + startTime.getMonth());
+      }
+
+      $.ajax({
+        url: staticurl + '/XcxEnt/queryMarketVegetDate',
+        type: 'POST',
+        async: false,
+        data: {
+          entBasicId: vipId,
+          dictId: dictId,
+          startDate: startTime.getFullYear() + '-' + (startTime.getMonth() + 1) + '-' + startTime.getDate(),
+          num: num,
+          type: type
+        },
+        success: function (res) {
+          var res = JSON.parse(res);
+          console.log('res', res)
+          // 基于准备好的dom，初始化echarts实例
+          var myChart = echarts.init(document.getElementById('main'));
+          // 指定图表的配置项和数据
+          option = {
+            grid: {
+              // x: 40,
+              // y: 40,
+              x2: 100,
+              y2: 100,
+            },
+            xAxis: {
+              name: '(日期)',
+              nameTextStyle: {
+                fontSize: 30
+              },
+              type: 'category',
+              data: res.timeArr,
+              axisLabel: {
+                show: true,
+                textStyle: {
+                  // color: '#4e4e4e',
+                  fontSize: 30 //此处设置X轴文字大小
+                }
+              },
+            },
+            yAxis: {
+              name: '(元/公斤)',
+              nameTextStyle: {
+                fontSize: 30
+              },
+              type: 'value',
+              axisTick: {
+                show: false
+              },
+              splitLine: {
+                show: false
+              },
+              axisLabel: {
+                show: true,
+                textStyle: {
+                  // color: '#4e4e4e',
+                  fontSize: 30 //此处设置X轴文字大小
+                }
+              },
+            },
+            series: [{
+              data: res.dateArr,
+              type: 'line',
+              connectNulls: true,
+              label: {
+                normal: {
+                  fontSize: 30
+                }
+              },
+              // itemStyle: {
+              //   normal: {
+              //     label: {
+              //       show: true
+              //     }
+              //   }
+              // }
+            }]
+          };
+          // 使用刚指定的配置项和数据显示图表。
+          myChart.setOption(option);
+        },
+        error: function (err) {
+          console.log('err', err);
+        }
+      });
+
+    }
+
+    function changeDateBtn(type) {
+      clickType = type;
+      $('#dayStart').val("");
+      $('#dayEnd').val("");
+      $('#monthStart').val("");
+      $('#monthEnd').val("");
+      $('#yearStart').val("");
+      $('#yearEnd').val("");
+      $('.item-btn').removeClass('active');
+      $('.dateBtns .'+ type).addClass('active');
+      $('.itemInputDiv').hide();
+      $('.sureBtn').show();
+      $('#'+ type).show();
+    }
+
+    function toClose() {
+      $('.mask').css('display', 'none');
+      $('#echarts').css('display', 'none');
+      this.BodyScroll(true)
+    }
+
+
+    function toEchart(vipId2, date, dictId2, name) {
+
+      vipId = vipId2;
+      dictId = dictId2;
+      console.log('vipId, date, dictId, name', vipId, date, dictId, name)
+      this.BodyScroll(false)
+      $('.itemInputDiv').hide();
+      $('.sureBtn').hide();
+      $('.mask').css('display', 'block');
+      $('.item-btn').removeClass('active');
+      $('#echarts').css('display', 'block');
+      $('#echartTitle').html(name + '价格历史走势')
+
+      let startDate = new Date(date);
+      let t_s = startDate.getTime();
+      startDate.setTime(t_s - 1000 * 60 * 60 * 24 * 10);
+      $.ajax({
+        url: staticurl + '/XcxEnt/queryMarketVegetDate',
+        type: 'POST',
+        async: false,
+        data: {
+          entBasicId: vipId,
+          dictId: dictId,
+          startDate: startDate.getFullYear() + '-' + (startDate.getMonth() + 1) + '-' + startDate.getDate(),
+          num: 10,
+          type: '0'
+        },
+        success: function (res) {
+          var res = JSON.parse(res);
+          console.log('res', res)
+          // 基于准备好的dom，初始化echarts实例
+          var myChart = echarts.init(document.getElementById('main'));
+          // 指定图表的配置项和数据
+          option = {
+            grid: {
+              // x: 40,
+              // y: 40,
+              x2: 100,
+              y2: 100,
+            },
+            xAxis: {
+              name: '(日期)',
+              nameTextStyle: {
+                fontSize: 30
+              },
+              type: 'category',
+              data: res.timeArr,
+              axisLabel: {
+                show: true,
+                textStyle: {
+                  // color: '#4e4e4e',
+                  fontSize: 30 //此处设置X轴文字大小
+                }
+              },
+            },
+            yAxis: {
+              name: '(元/公斤)',
+              nameTextStyle: {
+                fontSize: 30
+              },
+              type: 'value',
+              axisTick: {
+                show: false
+              },
+              splitLine: {
+                show: false
+              },
+              axisLabel: {
+                show: true,
+                textStyle: {
+                  // color: '#4e4e4e',
+                  fontSize: 30 //此处设置X轴文字大小
+                }
+              },
+            },
+            series: [{
+              data: res.dateArr,
+              type: 'line',
+              connectNulls: true,
+              label: {
+                normal: {
+                  fontSize: 30
+                }
+              },
+              // itemStyle: {
+              //   normal: {
+              //     label: {
+              //       show: true
+              //     }
+              //   }
+              // }
+            }]
+          };
+          // 使用刚指定的配置项和数据显示图表。
+          myChart.setOption(option);
+        },
+        error: function (err) {
+          console.log('err', err);
+        }
+      });
+
+      // const size = fGetChartFontSize();
+
+    }
+
+    // 遮罩弹窗禁止下面滑动  isState传true可以滑动  传false 不可以滑动
+    function BodyScroll(isState) {
+      var bodyDoc = document.body
+      if (!isState) {
+        topSpace = window.scrollY
+        bodyDoc.style.position = 'fixed'
+        bodyDoc.style.width = '100%'
+        bodyDoc.style.top = -topSpace + 'px'
+      } else {
+        bodyDoc.style.position = ''
+        bodyDoc.style.top = ''
+        bodyDoc.style.width = '100%'
+        window.scrollTo(0, topSpace) // 回到原先位置
+      }
+    }
+
+    function getUrlParameter(name) {
+      name = name.replace(/[]/, "\[").replace(/[]/, "\[").replace(/[]/, "\\\]");
+      var regexS = "[\\?&]" + name + "=([^&#]*)";
+      var regex = new RegExp(regexS);
+      var results = regex.exec(window.parent.location.href);
+      if (results == null) return ""; else {
+        return decodeURI(results[1]);
+      }
+    };
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>夜之金陵</title>
+    <script src="../js/jquery-1.12.4.min.js"></script>
+    <script src="../js/json2.js"></script>
+    <script src="../js/static.js?v=1"></script>
+    <!-- layer_mobile -->
+    <link rel="stylesheet" type="text/css" href="../js/layer.mobile/layer.mobile-v2.0/layer_mobile/need/layer.css">
+    <script src="../js/layer.mobile/layer.mobile-v2.0/layer_mobile/layer.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="../js/layer.mobile/layer.mobile.custom.css?">
+    <script src="../js/layer.mobile/layer.mobile.custom.js?v=<%=date%>" type="text/javascript"></script>
+    <!-- 自定义分页插件 -->
+    <script src="../js/MyCustomPlugIn/myCustomList/myCustomList_yeshi.js?v=6"></script>
+    <!-- 工具类 -->
+    <script src="../js/JavaScriptUtils.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/yeshiList.css">
+
+    <link rel="stylesheet" type="text/css" href="../js/jQuerySwipeslider/dist/swipeslider.css">
+    <script type="text/javascript" src="../js/jQuerySwipeslider/dist/swipeslider.min.js"></script>
+</head>
+
+<body>
+    <div class="select-bar">
+        <div class="select">
+            <select id="area">
+            </select>
+        </div>
+    </div>
+    <div class="list-container">
+
+        <div class="list" id="dataList" pageSize="100000" url="" isClean="false" pagingMode="mobile">
+            <div class="every" style="display:none;" centreid="{centreId}">
+                <div class="title">
+                    <div class="name">{centreName}</div>
+                </div>
+                <div class="title">
+                    <div class="area">{adminDivName}</div>
+                </div>
+                <div class="image">
+
+                    <div id="full_feature" class="swipslider">
+                        <ul class="sw-slides">
+                            <li class="sw-slide">
+                                <img src="{thumb2}">
+                            </li>
+                            <li class="sw-slide">
+                                <img src="{thumb4}">
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+                <div class="content">{remark}</div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
+<!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UQQpmhDmFB44H1scx27MezscrlcTT5Tl"></script>-->
+<script>
+    saveAsk('夜市列表');
+
+
+    //百度坐标获取
+    var latitude = "";
+    var longitude = "";
+
+
+
+
+    // 首页带入的参数
+    var dictId = getUrlParameter('dictId');
+    //当天日期
+    var today = new Date().Format("yyyy-MM-dd");
+
+    // 加载列表
+    searchList('', latitude, longitude);
+    function searchList(area, latitude, longitude) {
+        // $("#dataList").attr("url" , pageUrl + "/data/yeshiList.json?adminDiv=" + area + "&latitude=" + latitude + "&longitude=" + longitude)
+        $("#dataList").attr("url", staticurl + "/xcxCentre/queryYJJJQ?adminDiv=" + area + "&latitude=" + latitude + "&longitude=" + longitude)
+        $("#dataList").myLoad({ "adminDiv": area });//可自定义添加查询参数
+
+    }
+
+
+    //行政区划
+    $(document).ready(function () {
+        var latitude = 31.998414;
+        var longitude = 118.785146
+        var data = {
+            adminDiv: "",
+            entName: "",
+            indClass: "",
+            latitude: latitude,
+            longitude: longitude,
+            pageIndex: 0,
+            pageSize: 10
+        };
+
+        // var data = [{ "DICT_ID": "", "num": 1639, "NAME": "全部区域" }, { "DICT_ID": "222d899eab404662bb7cc74c45f97a2c", "num": 127, "NAME": "玄武区" }, { "DICT_ID": "e4899d340be34bee9bd6ad6cc537e620", "num": 221, "NAME": "秦淮区" }, { "DICT_ID": "91a4cc47573a4ffd8d33730039896b15", "num": 139, "NAME": "建邺区" }, { "DICT_ID": "2a078df284904f24ad99e6d357cdacab", "num": 253, "NAME": "鼓楼区" }, { "DICT_ID": "29d9dac777c4453185b19349d9222df5", "num": 91, "NAME": "浦口区" }, { "DICT_ID": "0580a070c2f6434d831263f73084835e", "num": 156, "NAME": "栖霞区" }, { "DICT_ID": "a8b1a1000a144632a3ab4dcff7785e7e", "num": 135, "NAME": "雨花台区" }, { "DICT_ID": "1927c3062fa4443b8bc7a97374b96c1f", "num": 258, "NAME": "江宁区" }, { "DICT_ID": "3eeccfe4c13442ed8cd7488883f2bb5b", "num": 99, "NAME": "六合区" }, { "DICT_ID": "01e8840199624c5f8f093191ef8e2dbf", "num": 51, "NAME": "溧水区" }, { "DICT_ID": "54570711057c4cf2b6adfb2fc79d133e", "num": 36, "NAME": "高淳区" }, { "DICT_ID": "3f4e7fd531364271aae0e6c3d3603cc5", "num": 73, "NAME": "江北新区" }];
+        // var html = "";
+        // for (var i = 0; i < data.length; i++) {
+        //     html = html + '<option value="' + data[i].DICT_ID + '">' + data[i].NAME + '</option>';
+        // }
+        // $("#area").append(html);
+        $.ajax({
+            url: staticurl + '/MarketEnt/queryMarketDiv?',
+            type: 'POST',
+            async: false,
+            data: data,
+            success: function (data) {
+                data = JSON.parse(data);
+                console.log('data', data)
+                var html = "";
+                for (var i = 0; i < data.length; i++) {
+                    html = html + '<option value="' + data[i].DICT_ID + '">' + data[i].NAME + '</option>';
+                }
+                $("#area").append(html);
+            },
+            error: function (err) {
+                console.log('err', err);
+            }
+        });
+    });
+
+    //筛选
+    $(document).ready(function () {
+        $("#area").on("change", function () {
+            var area = $("#area").val();
+            searchList(area, latitude, longitude)
+        });
+
+    });
+
+
+    /**
+     * 构造方法，防止调用者未声明此方法而报错
+     * 列表图片轮播
+     */
+    function onloadCallback() {
+        // 滚动插件
+        $(".swipslider").each(function () {
+            $(this).swipeslider();
+        })
+    }
+
+
+    // 详情页
+    function gotoActivityItem(activityId) {
+        window.location.href = pageUrl + '/views/activityItem.html?activityId=' + activityId;
+    }
+
+
+
+</script>

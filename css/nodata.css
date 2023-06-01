@@ -1,0 +1,16 @@
+/* CSS 重置
+---------------------------------------------------------------------------------------------------------------------------------- */
+* {
+    margin:0; padding:0; list-style:none; /* reset */
+    font-family: Microsoft YaHei; /* 字体 */
+    -webkit-box-sizing: border-box; /* 边框不增加元素高宽 */
+    -moz-box-sizing: border-box; /* 边框不增加元素高宽 */
+    box-sizing: border-box; /* 边框不增加元素高宽 */
+}
+html{ width: 100%; height:100%; font-size:625%;  }/* 1rem = 100px */
+body{ width: 100%; height:100%; top: 0; bottom: 0; left: 0; right: 0; /* position: absolute;  line-height: 0;*/ }
+
+.container{ position: absolute; top: calc(50% - 0.9rem); height: 1.8rem;  left: calc(50% - 0.6rem); width: 1.2rem; }
+.container > .image{ height: 1.12rem; width: 1.09rem;  background:  url(../image/nodata.png) no-repeat scroll center center; background-size: 100% 100%; }
+.container >.text{ height: 0.25rem; margin-top: 0.2rem; text-align: center; font-size: 0.2rem; color: #47485A; font-weight: bold;  }
+

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="user-scalable=no">
+  <title>网点首页</title>
+  <link rel="stylesheet" type="text/css" href="/css/ent.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="topDiv">
+      <div class="searchDiv">
+        <div class="search">
+          <div class="search-input" id="searchVal" onclick="toSearch()">请输入网点名称</div>
+          <div class="closeDiv">
+            <div class="close" onclick="toClear()">
+              <span class="close-icon"></span>
+            </div>
+          </div>
+        </div>
+        <img class="map" onclick="toMap()" src="https://site.sumexsoft.com/images/wechat/dot/dt-qh.png" />
+      </div>
+
+      <div class="menu-po">
+        <div class="swiperDiv">
+          <div class="swiper-tab">
+            <div class="swiper-tab-item" onclick="menuClick('0')" id="swiperxz">
+              <span id="areaName">行政区划</span>
+              <div class="icon"></div>
+            </div>
+            <div class="swiper-tab-item" onclick="menuClick('2')" id="swipersx">
+              筛选条件
+              <div class="icon"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+      <div class="menu-if" id="sqdiv">
+        <div class="meun-txt" id="meuntxtxz" style="display: none;">
+          <div class="menu-text-list">
+            <div class="menu-text-list-left over-auto" style="height:800px;" id="xzqh">
+              <div class="meun-city-txt">
+                <span>全部区域</span>
+                <div class="num">1842个</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="meun-txt over-auto" id="meuntxtsx" style="display: none;height:800px;">
+          <div class="slidowntop" style="margin-top: 30px;">
+            <span>业态分类(国标)</span>
+            <div class="ck">
+              <span onclick="selectAll()">全选</span>
+              <span style="padding-left: 15px;" onclick="clearAll()">清空</span>
+            </div>
+          </div>
+          <div class="commanders" id="xsitem">
+          </div>
+          <div class="btnDiv">
+            <div class="clearBtn" onclick="clearAll()">清空</div>
+            <div class="sureBtn" onclick="submitSelect()">确定</div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+    </div>
+
+    <div class="scrollPageDiv" id="scroll-page">
+      <div class="top-scroll">
+        <div class="title-item">
+          <div class="title">设施数量</div>
+          <div class="itemDiv">
+            <div class="scrollDiv" id="insData"></div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="listItems" id="entLists"></div>
+    </div>
+
+  </div>
+  <div class="mask"></div>
+
+  <script src="/js/jquery-3.4.1.min.js"></script>
+  <script src="/js/static.js"></script>
+  <script type="text/javascript">
+    var topSpace = 0
+    //行政区划
+    var divId = '';
+    //业态分类
+    var indIds = [];
+    queryPro();
+    var num = 0;
+    this.getZdDot()
+
+    // 筛选导航栏事件
+    function menuClick(type) {
+      if (type == '0') {
+        //行政
+        if ($('#swiperxz').hasClass("active")) {
+          this.BodyScroll(true)
+          $('.mask').css('display', 'none')
+          $('#swiperxz').removeClass('active');
+          $("#f").hide();
+        } else {
+          this.BodyScroll(false)
+          $('.mask').css('display', 'block')
+          $('#swiperxz').addClass('active');
+          $("#meuntxtxz").css('display', 'block');
+          this.getXzArea()
+        }
+        $('#swipersq').removeClass('active');
+        $('#swipersx').removeClass('active');
+        $("#meuntxtsx").hide();//筛选
+      } else if (type == '2') {
+        if ($('#swipersx').hasClass("active")) {
+          $("#meuntxtsx").hide();
+          $("#entLists").html('')
+          this.BodyScroll(true)
+          $('.mask').css('display', 'none')
+          $('#swipersx').removeClass('active');
+          num = 0;
+          setEntJson(num);
+          queryPro();
+        } else {
+          this.BodyScroll(false)
+          $('.mask').css('display', 'block')
+          $('#swipersx').addClass('active');
+          $("#meuntxtsx").show();
+        }
+        $('#swiperxz').removeClass('active');
+        $('#swipersq').removeClass('active');
+        $("#meuntxtxz").hide();//行政
+      }
+    }
+
+    //初始化行政区划数据
+    function getXzArea() {
+      var data = this.getCondition();
+      $.ajax({
+        url: staticurl + '/MarketEnt/queryMarketDiv?',
+        type: 'POST',
+        async: false,
+        data: data,
+        success: function (data) {
+          data = JSON.parse(data);
+          console.log('data', data)
+          var html = '';
+          for (var i = 0; i < data.length; i++) {
+            html += '<div class="meun-city-txt" onclick="setDivId(\'' + data[i].NAME + '\', \'' + data[i].DICT_ID + '\')">';
+            html += '<span>' + data[i].NAME + '</span>';
+            html += '<div class="num">' + data[i].num + '个</div>';
+            html += '</div>';
+          }
+          $("#xzqh").html(html);
+        },
+        error: function (err) {
+          console.log('err', err);
+        }
+      });
+    }
+
+
+    //筛选信息数据
+    function getZdDot() {
+      $.ajax({
+        url: staticurl + '/MarketPlan/getIndClass',
+        type: 'POST',
+        async: false,
+        success: function (data) {
+          data = JSON.parse(data);
+          var html = '';
+          for (var i = 0; i < data.length; i++) {
+            html += '<div class="btn" id=' + data[i].id + ' onclick="toselect(\'' + data[i].id + '\')">' + data[i].name + '</div>';
+          }
+          $("#xsitem").html(html);
+        },
+        error: function (err) {
+          console.log('err', err);
+        }
+      });
+    }
+
+    //行政区划点击
+    function setDivId(name, id) {
+      console.log('name, id', name, id)
+      $('#areaName').html(name)
+      divId = id;
+      num = 0;
+      $("#entLists").html('')
+      setEntJson(num);
+      queryPro();
+      $("#meuntxtxz").hide();
+      this.BodyScroll(true)
+      $('.mask').css('display', 'none')
+      $('#swiperxz').removeClass('active');
+    }
+
+    // 筛选条件选中
+    function toselect(dictId) {
+      if ($('#' + dictId).hasClass("btn-selected")) {
+        $('#' + dictId).removeClass('btn-selected');
+        delitem(indIds, dictId);
+      } else {
+        $('#' + dictId).addClass('btn-selected');
+        if (indIds == '') {
+          indIds = []
+        }
+        indIds.push(dictId);
+
+      }
+      console.log('indIds', indIds);
+    }
+
+    // 筛选条件取消
+    function delitem(arr, text) {
+      for (let i = 0; i < arr.length; i++) {
+        if (text == arr[i]) {
+          arr.splice(i, 1);
+        }
+      }
+      console.log('indIds', indIds);
+    }
+
+    // 确定按钮
+    function submitSelect() {
+      num = 0;
+      $("#entLists").html('')
+      console.log('indIds恭恭敬敬a', indIds);
+      setEntJson(num);
+      queryPro();
+      this.BodyScroll(true)
+      $('.mask').css('display', 'none')
+      $('#swipersx').removeClass('active');
+      $("#meuntxtsx").hide();
+    }
+
+    // 全选
+    function selectAll() {
+      indIds = []
+      $('#xsitem .btn').addClass('btn-selected')
+      $("#xsitem .btn-selected").each(function () {
+        indIds.push($(this).attr("id"));
+      })
+       console.log('*****************************', indIds)
+    }
+
+    // 取消按钮
+    function clearAll() {
+      $('#xsitem .btn').removeClass('btn-selected')
+      indIds = []
+      console.log('#########', indIds)
+      // num = 0;
+      // $("#entLists").html('')
+      // setEntJson(num);
+      // queryPro();
+      // this.BodyScroll(true)
+      // $('.mask').css('display', 'none')
+      // $('#swipersx').removeClass('active');
+      // $("#meuntxtsx").hide();
+    }
+
+    // 遮罩弹窗禁止下面滑动  isState传true可以滑动  传false 不可以滑动
+    function BodyScroll(isState) {
+      var bodyDoc = document.getElementById('scroll-page')
+      if (!isState) {
+        topSpace = window.scrollY
+        bodyDoc.style.position = 'fixed'
+        bodyDoc.style.width = '100%'
+        bodyDoc.style.top = -topSpace + 'px'
+      } else {
+        bodyDoc.style.position = ''
+        bodyDoc.style.top = ''
+        bodyDoc.style.width = '100%'
+        window.scrollTo(0, topSpace) // 回到原先位置
+      }
+    }
+
+    $(document).ready(function () {
+      var range = 20;             // 距下边界长度/单位px
+      var maxnum = setEntJson(num);          // 设置加载最多次数
+      var totalheight = 0;
+      $(window).scroll(function () {
+        // 滚动条距顶部距离(页面超出窗口的高度)
+        var srollPos = $(window).scrollTop();
+        totalheight = parseFloat($(window).height()) + parseFloat(srollPos);
+        //判断上拉的高度以决定是否加载更多
+        if (($(document).height() - range) <= totalheight && num < maxnum) {
+          setEntJson(++num);
+        }
+      });
+    });
+
+    // 列表数据
+    function setEntJson(num) {
+      var totalPage = ''
+      var data = this.getCondition();
+      data.pageSize = 10;
+      data.pageIndex = num;
+      console.log('data', data)
+      $.ajax({
+        url: staticurl + '/MarketEnt/queryMarketEntList',
+        type: 'POST',
+        async: false,
+        data: data,
+        success: function (res) {
+          var josndata = JSON.parse(res).datalist;
+          totalPage = JSON.parse(res).totalPage
+          var html = '';
+          for (var i = 0; i < josndata.length; i++) {
+            html += '<div class="entlist"><div class="ent" onclick="toEntDetail(\'' + josndata[i].ent_id + '\',' + '\'' + josndata[i].ent_basic_id + '\')">';
+            html += '<img class="entmap" src="' + josndata[i].thumb + '"/>';
+            html += '<div class="entinfo">';
+            html += '<div class="entname">' + josndata[i].ent_name + '</div>';
+            html += '<div class="enttype">';
+            html += '<img class="little-img" src="' + josndata[i].icon + '"/>';
+            html += '<span>' + josndata[i].ind_name + '</span>';
+            html += '<span style="padding-left: 5px;">' + josndata[i].centre_name + '</span>';
+            html += '<span style="padding-left: 5px;">' + josndata[i].div_name + '</span>';
+            html += '</div>';
+            html += '<div class="entarea">';
+            html += '<img class="little-img" src="https://site.sumexsoft.com/images/wechat/dot/sywd-750_07.jpg"/>';
+            html += '<span class="entaddress-one">营业面积</span>';
+            html += '<span class="entaddress-two">' + josndata[i].bus_area + '㎡</span>';
+            html += '</div>';
+            html += '<div class="entaddress">';
+            html += '<img class="little-img" src="https://site.sumexsoft.com/images/wechat/dot/sywd-750_13.jpg"/>';
+            html += '<span class="entaddress-one">地址</span>';
+            if (josndata[i].address.length > 14) {
+              var address = josndata[i].address;
+              address = address.substring(0, 14);
+              html += '<span class="entaddress-two">' + address + '</span>';
+            } else {
+              html += '<span class="entaddress-two">' + josndata[i].address + '</span>';
+            }
+            html += '<a href="https://uri.amap.com/marker?position=' + josndata[i].longitude + ',' + josndata[i].latitude + '&name=' + josndata[i].ent_name +'"><img class="little-img" src="https://site.sumexsoft.com/images/wechat/dot/sywd-750_10.jpg"/></a>';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+          }
+          $("#entLists").append(html);
+        },
+        error: function (err) {
+          console.log('err', err);
+        }
+      });
+      return totalPage
+    }
+
+    // 设施数量数据初始化
+    function queryPro() {
+      var data = this.getCondition();
+      console.log('data', data)
+
+      $.ajax({
+        url: staticurl + '/MarketEnt/queryPro?',
+        type: 'POST',
+        async: false,
+        data: data,
+        success: function (res) {
+          var res = JSON.parse(res);
+          console.log('res', res)
+          var areaData = res.areaData;
+          var areaList = res.areaList;
+          var insData = res.insData;
+          var insList = res.insList;
+          var html = '';
+          for (var i = 0; i < insData.length; i++) {
+            if (insData[i].name != null && insData[i].name != 'null') {
+              html += '<div class="item">';
+              if (insData[i].name.length > 4) {
+                var name = insData[i].name;
+                name = name.substring(0, 4);
+                html += '<div class="name">' + name + '</div>';
+              } else {
+                html += '<div class="name">' + insData[i].name + '</div>';
+              }
+              html += '<div class="pro">' + insData[i].pro + '</div>';
+              html += '</div>';
+            }
+          }
+          html += '<div class="item" onclick="toChart()">';
+          html += '<div class="name">查看统计图</div>';
+          html += '</div>';
+          $("#insData").html(html);
+        },
+        error: function (err) {
+          console.log('err', err);
+        }
+      });
+    }
+
+    // 跳转网点详情页面
+    function toEntDetail(ent_id, ent_basic_id) {
+      console.log('ent_id, ent_basic_id', ent_id, ent_basic_id)
+      window.location.href = pageUrl + '/views/entDetail.html?ent_id=' + ent_id + '&ent_basic_id=' + ent_basic_id;
+    }
+
+    function toSearch() {
+      window.location.href = pageUrl + '/views/search.html?data=' + JSON.stringify(this.getCondition())
+
+    }
+
+    function toMap() {
+      window.location.href = pageUrl + '/views/map.html';
+    }
+
+    function toChart() {
+      // window.location.href = pageUrl + '/views/chartList.html?data=' + JSON.stringify(this.getCondition())
+
+      window.location.href = pageUrl + '/views/chartList.html?adminDiv=' + JSON.stringify(this.getCondition().adminDiv)
+                                                           + '&indClass=' + JSON.stringify(this.getCondition().indClass)
+                                                           + '&entName=' + JSON.stringify(this.getCondition().entName)
+                                                           + '&latitude=' + JSON.stringify(this.getCondition().latitude)
+                                                           + '&longitude=' + JSON.stringify(this.getCondition().longitude)
+    }
+
+    function toClear() {
+      $('#searchVal').val('')
+      $("#entLists").html('')
+      this.setEntJson(0)
+    }
+
+    // var entName = getUrlParameter('keyword');
+    $('#searchVal').val(getUrlParameter('keyword'))
+
+    // 获取查询条件
+    function getCondition() {
+      //网点名称
+      // console.log('keyword', entName)
+      if ($('#searchVal').val() == '') {
+        $('#searchVal').html('请输入网点名称')
+        $('#searchVal').css('color', '#a9a9a9')
+        $('.closeDiv').css('display', 'none')
+      } else {
+        $('#searchVal').html($('#searchVal').val())
+        $('#searchVal').css('color', '#000000')
+        $('.closeDiv').css('display', 'block')
+      }
+      // // 行政区划
+      // var divId = '';
+      // //业态分类
+      // var indIds = [];
+      var temp = []
+      console.log('************', indIds)
+      if (indIds == '') {
+        indIds = []
+      } 
+      temp = indIds.join(',');
+      
+      console.log('indIds', indIds, divId)
+      //当前位置
+      var latitude = 31.998414;
+      var longitude = 118.785146
+      var data = {
+        adminDiv: divId,
+        indClass: temp,
+        entName: $('#searchVal').val(),
+        latitude: latitude,
+        longitude: longitude,
+      };
+      return data;
+    }
+
+    function getUrlParameter(name) {
+      name = name.replace(/[]/, "\[").replace(/[]/, "\[").replace(/[]/, "\\\]");
+      var regexS = "[\\?&]" + name + "=([^&#]*)";
+      var regex = new RegExp(regexS);
+      var results = regex.exec(window.parent.location.href);
+      if (results == null) return ""; else {
+        return decodeURI(results[1]);
+      }
+    };
+
+  </script>
+</body>
+
+</html>

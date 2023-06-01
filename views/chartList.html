@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="user-scalable=no">
+  <title>网点查询</title>
+  <link rel="stylesheet" type="text/css" href="/css/chartList.css">
+  <script src="/js/echarts.min.js"></script>
+</head>
+
+<body>
+  <div class="movie-container">
+    <div class="topDiv">
+      <div class="navbar">
+        <div class="navbar-item" onclick="changeView(0)">
+          <span class="navbar-title active" id="navname">图表</span>
+        </div>
+        <div class="line" id="line" style="width:50%;transform:translateX(0%);"></div>
+        <div class="navbar-item" onclick="changeView(1)">
+          <span class="navbar-title " id="navlist">列表</span>
+        </div>
+        <div class="line" id="line1" style="width:50%;transform:translateX(0%);"></div>
+      </div>
+    </div>
+    <div class="movie-content-wrapper">
+      <div class="container" id="containera">
+        <div class="fac-number" id="invnum"></div>
+        <div id="sbdPieChartContainer" style="width:100%;height:calc(100% - 100px);overflow:auto;"></div>
+        <!-- <div class="fac-number" id="areanum"></div>
+        <div id="sbdPieChartContainer1" style="width:100%;height:600px;overflow:auto;"></div> -->
+      </div>
+      <div class="listDiv" id="listDiva" style="display: none;">
+        <div class="itemDiv" id="sqlist">
+          <!-- <div class="title1">11</div>
+  							<div class="item">
+  								<span class="subtitle">业态分类(国标):</span>
+  								<span class="cont">112</span>
+  							</div>
+  							<div class="item">
+  								<span class="subtitle">营业面积(m²):</span>
+  								<span class="cont">132</span>
+  							</div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/jquery-3.4.1.min.js"></script>
+  <script src="/js/static.js"></script>
+  <script type="text/javascript">
+    var num = 0;
+
+    // var data = JSON.parse(getUrlParameter('data'));
+    var data = {};
+    data.adminDiv = JSON.parse(getUrlParameter('adminDiv'));
+    data.indClass = JSON.parse(getUrlParameter('indClass'));
+    data.entName = JSON.parse(getUrlParameter('entName'));
+    data.latitude = JSON.parse(getUrlParameter('latitude'));
+    data.longitude = JSON.parse(getUrlParameter('longitude'));
+    console.log('&*********^^^', data)
+
+    // menuClick('0')
+
+    /**
+        *设置比例
+        */
+    var percentageBarOption = {
+      title: {
+        x: 'center'
+      },
+      tooltip: {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      }
+    }
+    var num = 0;
+    $(document).ready(function () {
+      console.log('aaaaaaa')
+      setqueryPro();
+      setEntJson();
+      var range = 20;             //距下边界长度/单位px
+      var maxnum = 1000;          //设置加载最多次数
+      var totalheight = 0;
+      $(window).scroll(function () {
+        //滚动条距顶部距离(页面超出窗口的高度)
+        var srollPos = $(window).scrollTop();
+        totalheight = parseFloat($(window).height()) + parseFloat(srollPos);
+        //判断上拉的高度以决定是否加载更多
+        if (($(document).height() - range) <= totalheight && num != maxnum) {
+          loadMore();
+        }
+      });
+    });
+    //初始化饼图
+    function setqueryPro() {
+      $.ajax({
+        url: staticurl + '/MarketEnt/queryPro?',
+        type: 'POST',
+        async: false,
+        data: {
+          pageSize: 10,
+          pageIndex: num,
+          adminDiv: data.adminDiv,
+          indClass: data.indClass,
+          entName: data.entName,
+          latitude: data.latitude,
+          longitude: data.longitude
+        },
+        success: function (data) {
+          data = JSON.parse(data);
+          console.log(data);
+          var areaData = data.areaData;
+          var areaList = data.areaList;
+          var insData = data.insData;
+          var insList = data.insList;
+          buildDepPercentageBarChart(percentageBarOption, '', insList);
+          // buildDepPercentageBarChart1(percentageBarOption, '', areaList);
+        },
+        error: function () {
+          console.log("a2");
+          //hideLoading(index);
+        }
+      });
+    }
+
+    //设施数量数据设置
+    function buildDepPercentageBarChart(option, title, data) {
+      var myChart = echarts.init(document.getElementById('sbdPieChartContainer'));
+      myChart.setOption(option);
+
+      var nameArr = [];
+      var series = [];
+      var totalMonthArr = [];
+      var invnum = 0;
+      for (var i = 0, l = data.length; i < l; i++) {
+        var row = data[i];
+        var total = { value: row.value, name: row.name };
+        totalMonthArr.push(total);
+        nameArr.push(row.name);
+        invnum += row.value;
+      }
+      $("#invnum").html("设施数量" + invnum + "个");
+      var series_month = {
+        name: '成本',
+        type: 'pie',
+        radius: '55%',
+        center: ['50%', '40%'],
+        data: totalMonthArr,
+        label: {
+          normal: {
+            show: true,
+            formatter: '{b}: \n {c} ({d}%)',
+            textStyle: {            // 提示文字的样式
+              fontSize: 30
+            }
+          }
+        },
+        itemStyle: {
+          emphasis: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          },
+          normal: {
+            label: {
+              textStyle: { //数值样式
+                fontSize: 30
+              }
+            }
+          }
+        }
+      };
+      series.push(series_month);
+
+      myChart.setOption({
+        series: series
+      });
+    }
+
+    function changeView(type) {
+      if (type == '0') {
+        $('#navname').addClass('active');
+        $('#navlist').removeClass('active');
+        $("#line").css("transform", "translateX(0%)");
+        $("#line1").css("transform", "translateX(0%)");
+        $('#containera').show();
+        $('#listDiva').hide();
+      } else {
+        $('#navlist').addClass('active');
+        $('#navname').removeClass('active');
+        $("#line").css("transform", "translateX(100%)");
+        $("#line1").css("transform", "translateX(100%)");
+        $('#containera').hide();
+        $('#listDiva').show();
+      }
+    }
+
+    //商圈信息调用查询
+    function setEntJson() {
+      $.ajax({
+        url: staticurl + '/MarketEnt/queryMarketEntList?',
+        type: 'POST',
+        async: false,
+        data: {
+          pageSize: 10,
+          pageIndex: num,
+          adminDiv: data.adminDiv,
+          indClass: data.indClass,
+          entName: data.entName,
+          latitude: data.latitude,
+          longitude: data.longitude
+        },
+        success: function (data) {
+          data = JSON.parse(data);
+          var josndata = data.datalist;
+          var html = '';
+          for (var i = 0; i < josndata.length; i++) {
+            html += '<div class="itemDivs" onclick="toEntDetail(\'' + josndata[i].ent_id + '\',' + '\'' + josndata[i].ent_basic_id + '\')">'
+            html += '<div style="margin-bottom: 20px;"><span style="font-size: 2.1em;">' + josndata[i].ent_name + '</span></div>';
+            html += '<div class="items">';
+            html += '<div class="item">';
+            html += '<span class="subtitle">业态分类(国标):</span>';
+            html += '<span class="cont">' + josndata[i].ind_name + '</span>';
+            html += '</div>';
+            html += '<div class="item">';
+            html += '<span class="subtitle">营业面积(m²):</span>';
+            html += '<span class="cont">' + josndata[i].bus_area + '</span>';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+          }
+          $("#sqlist").html(html);
+        },
+        error: function (err) {
+          console.log('err', err);
+        }
+      });
+    }
+    //加载更多:ajax请求，获取文章列表
+    function loadMore() {
+      scrollif = false;
+      $.ajax({
+        url: staticurl + '/MarketEnt/queryMarketEntList?',
+        type: 'POST',
+        async: false,
+        data: {
+          pageSize: 10,
+          pageIndex: ++num,
+          adminDiv: data.adminDiv,
+          indClass: data.indClass,
+          entName: data.entName,
+          latitude: data.latitude,
+          longitude: data.longitude
+        },
+        success: function (data) {
+          data = JSON.parse(data);
+          var josndata = data.datalist;
+          var html = '';
+          for (var i = 0; i < josndata.length; i++) {
+            html += '<div class="itemDivs" onclick="toEntDetail(\'' + josndata[i].ent_id + '\',' + '\'' + josndata[i].ent_basic_id + '\')">'
+            html += '<div style="margin-bottom: 20px;"><span style="font-size: 2.1em;">' + josndata[i].ent_name + '</div>';
+            html += '<div class="items">';
+            html += '<div class="item">';
+            html += '<span class="subtitle">业态分类(国标):</span>';
+            html += '<span class="cont">' + josndata[i].ind_name + '</span>';
+            html += '</div>';
+            html += '<div class="item">';
+            html += '<span class="subtitle">营业面积(m²):</span>';
+            html += '<span class="cont">' + josndata[i].bus_area + '</span>';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+          }
+          $("#sqlist").append(html);
+        },
+        error: function (err) {
+          console.log('err', err);
+        }
+      });
+    }
+
+    // 跳转网点详情页面
+    function toEntDetail(ent_id, ent_basic_id) {
+      console.log('ent_id, ent_basic_id', ent_id, ent_basic_id)
+      window.location.href = pageUrl + '/views/entDetail.html?ent_id=' + ent_id + '&ent_basic_id=' + ent_basic_id;
+    }
+
+    function getUrlParameter(name) {
+      name = name.replace(/[]/, "\[").replace(/[]/, "\[").replace(/[]/, "\\\]");
+      var regexS = "[\\?&]" + name + "=([^&#]*)";
+      var regex = new RegExp(regexS);
+      var results = regex.exec(window.parent.location.href);
+      if (results == null) return ""; else {
+        return decodeURI(results[1]);
+      }
+    };
+
+  </script>
+</body>
+
+</html>

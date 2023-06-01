@@ -1,0 +1,242 @@
+.close-sect .fa-caret-left{
+    padding-top: 0.6rem;
+}
+
+.close-sect .fa-caret-right{
+    padding-top: 0.6rem;
+}
+
+.m-sidebar .side-pic-design .list-icon{
+    background: url("../images/sidebar/1.png") no-repeat;
+}
+
+.m-sidebar .side-pic-point .list-icon{
+    background: url("../images/sidebar/2.png") no-repeat;
+}
+
+.m-sidebar .side-pic-report .list-icon{
+    background: url("../images/sidebar/3.png") no-repeat;
+}
+
+
+.m-sidebar .side-pic-config .list-icon{
+    background: url("../images/sidebar/4.png") no-repeat;
+}
+
+.sidebarToggleSpan{
+	padding-left: 5px;
+	display: inline-block;
+    width: 5rem;
+}
+
+.m-panel section{
+	overflow: hidden;
+} 
+
+.m-panel section::-webkit-scrollbar { /*滚动条整体样式*/
+	width: 4px; /*高宽分别对应横竖滚动条的尺寸*/
+	height: 4px;
+}
+
+.m-panel section::-webkit-scrollbar-thumb { /*滚动条里面小方块*/
+	border-radius: 5px;
+	-webkit-box-shadow: inset 0 0 5px #00ACE6;
+	background: rgba(0, 0, 0, 0.2);
+}
+
+.m-panel section::-webkit-scrollbar-track { /*滚动条里面轨道*/
+	-webkit-box-shadow: inset 0 0 5px #fff;
+	border-radius: 0;
+	background: rgba(0, 0, 0, 0.1);
+}
+
+
+
+
+.sidebarTable{
+    font-size: .6rem;
+    overflow: auto;
+}
+
+.sidebartr-select{
+	background-color: rgb(204, 204, 204);
+}
+
+.m-sidebar-right{
+   display: block;
+    position: absolute;
+    right: 0rem;
+    top: 2rem;
+    /*bottom: 20rem;*/
+    /* width: 16rem; */
+    background-color: #FFFFFF;
+    /* z-index: 999; */
+    /*  overflow-x: hidden;
+    overflow-y: auto; */
+}
+
+
+.m-sidebar-right::-webkit-scrollbar { /*滚动条整体样式*/
+	width: 4px; /*高宽分别对应横竖滚动条的尺寸*/
+	height: 4px;
+}
+
+.m-sidebar-right::-webkit-scrollbar-thumb { /*滚动条里面小方块*/
+	border-radius: 5px;
+	-webkit-box-shadow: inset 0 0 5px #00ACE6;
+	background: rgba(0, 0, 0, 0.2);
+}
+
+.m-sidebar-right::-webkit-scrollbar-track { /*滚动条里面轨道*/
+	-webkit-box-shadow: inset 0 0 5px #fff;
+	border-radius: 0;
+	background: rgba(0, 0, 0, 0.1);
+}
+
+/* .phone .m-sidebar-right{
+    display: none;
+    position: absolute;
+    right: .5rem;
+    top: 3rem;
+    bottom: 20rem;
+    height: 90%;
+    width: 70%;
+    background-color: #FFFFFF;
+    z-index: 999;
+    overflow: auto;
+} */
+
+.right-common-table{
+   	margin: 10px 10px 10px 10px;
+}
+
+.right-common-table table,tr,td{
+	border: solid 1px #AAAAAA;
+}
+
+.right-title{
+    width: 100%;
+    height: 1rem;
+    font-size:0.8rem;
+    text-align:center;
+    background-color: #eee;
+}
+
+.right-main .right-title>td{
+    padding-left: 10px;
+}
+
+.right-data{
+    width: 100%;
+    font-size:0.6rem;
+    border: solid 1px,0,1px,0 #AAAAAA;
+    text-indent:2em;
+    vertical-align: top;
+}
+.right-data>div{
+    padding: 5px 5px 5px 5px
+}
+.right-name{
+	width:0.4rem;    
+    margin: 0 auto;    
+   	font-size:0.6rem;
+   	padding:2px 2px 2px 2px;
+    word-wrap: break-word;/*英文的时候需要加上这句，自动换行*/    
+}
+/* .right-main .right-data>td{
+    padding-left: 10px;
+} */
+.sidebar-section{
+	width: 100%;
+	overflow: hidden; 
+	display: none;
+}
+
+.sidebar-section.active{
+	width: 16rem;
+	left: -16rem;
+	height: inherit;
+	display: block;
+}
+
+.show{
+	display: block!important;
+}
+
+.unshow{
+	display: none!important;
+}
+
+.sidebar-melteSelect-hidden{
+	display: none;
+    border: 1px solid #aaa;
+    padding-top: .5rem;
+}
+
+
+.sidebar-melteSelect-hidden input[type=checkbox],.sidebar-melteSelect-hidden input[type=radio]  {  
+    visibility: hidden;  
+} 
+
+.sidebar-table-th{
+    font-size: .7rem;
+    line-height: 1.5rem;
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+.sidebar-table-th .fa{
+    float: right;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+.sidebar-table-th.showdata .fa{
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+.sidebar-table-body{
+	display: none;
+}
+
+.tableshow{
+	display: table-row-group;
+}
+
+
+.design-table{
+	font-size: .6rem;
+	margin: 5px 5px 5px 5px
+}
+
+.td-num{
+	text-align: right;
+}
+
+.sidebar-title{
+	font-size: 1.2rem;
+    text-align: center;
+    font-weight: 700;
+    margin: 5px 5px 5px 5px;
+}
+
+.right-main{
+    overflow: auto;
+    width:inherit;
+    margin: .2rem 0 .2rem 0;
+}
+
+
+.right-data-title{
+	text-indent: 0;
+    font-weight: 700;
+    padding: 2px 2px 2px 2px;
+}
+

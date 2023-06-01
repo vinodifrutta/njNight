@@ -1,0 +1,53 @@
+[{
+  "DICT_ID": "",
+  "num": 1639,
+  "NAME": "全部区域"
+}, {
+  "DICT_ID": "222d899eab404662bb7cc74c45f97a2c",
+  "num": 127,
+  "NAME": "玄武区"
+}, {
+  "DICT_ID": "e4899d340be34bee9bd6ad6cc537e620",
+  "num": 221,
+  "NAME": "秦淮区"
+}, {
+  "DICT_ID": "91a4cc47573a4ffd8d33730039896b15",
+  "num": 139,
+  "NAME": "建邺区"
+}, {
+  "DICT_ID": "2a078df284904f24ad99e6d357cdacab",
+  "num": 253,
+  "NAME": "鼓楼区"
+}, {
+  "DICT_ID": "29d9dac777c4453185b19349d9222df5",
+  "num": 91,
+  "NAME": "浦口区"
+}, {
+  "DICT_ID": "0580a070c2f6434d831263f73084835e",
+  "num": 156,
+  "NAME": "栖霞区"
+}, {
+  "DICT_ID": "a8b1a1000a144632a3ab4dcff7785e7e",
+  "num": 135,
+  "NAME": "雨花台区"
+}, {
+  "DICT_ID": "1927c3062fa4443b8bc7a97374b96c1f",
+  "num": 258,
+  "NAME": "江宁区"
+}, {
+  "DICT_ID": "3eeccfe4c13442ed8cd7488883f2bb5b",
+  "num": 99,
+  "NAME": "六合区"
+}, {
+  "DICT_ID": "01e8840199624c5f8f093191ef8e2dbf",
+  "num": 51,
+  "NAME": "溧水区"
+}, {
+  "DICT_ID": "54570711057c4cf2b6adfb2fc79d133e",
+  "num": 36,
+  "NAME": "高淳区"
+}, {
+  "DICT_ID": "3f4e7fd531364271aae0e6c3d3603cc5",
+  "num": 73,
+  "NAME": "江北新区"
+}]

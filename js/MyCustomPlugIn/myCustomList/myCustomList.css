@@ -1,0 +1,45 @@
+/* �Զ����ҳ������CSS
+---------------------------------------------------------------------------------------------------------------------------------- */
+.data-pager{ width: 100%; height: 50px; overflow: hidden; margin-bottom: 0px; }
+@media (max-width: 767px) {
+	.data-pager{ padding: 0 2% 0 2%; width: 95%; margin: 0px auto; }
+}
+@media (min-width: 768px) {
+	.data-pager{ position: absolute; bottom: 0px; }
+}
+
+.data-pager > div{ width: 100%; height: 100%; float: right; }
+
+.data-pager > div > div{ 
+	float: left; margin-top: 12px; height:26px; line-height: 26px; cursor: pointer; margin-left:20px; -webkit-user-select:none;  color: #333333; border-radius: 0px; font-size: 12px; }
+@media (max-width: 767px) {
+	.data-pager > div > div{  margin-left:5px; }
+}
+
+.last-page{ width: 50px; margin-left:0px !important; background-color: #2998DC; text-align: center;  }
+.next-page{ width: 50px; background-color: #2998DC; text-align: center; color: #FFFFFF !important; }
+.page-num{  background-color: #FFF; text-align: center; color: #0E97E5; }
+.page-num > input{ width: 30px; height: 25px; margin-right:3px; text-align: center; border-radius: 0px; border: 1px solid #2998DC; }
+.page-num-total{ text-align: left; margin-left:3px; padding-right: 5px; }
+.goto-page{ width: 30px; background-color: #2998DC; text-align: center; color: #FFFFFF !important; }
+.total-count{ text-align: left;}
+/* �Զ���Loading������CSS
+---------------------------------------------------------------------------------------------------------------------------------- */
+.data-pager-loading{  text-align: center; height: 40px; line-height: 40px; }
+
+/* �Զ���ѡ��򹫹�CSS
+---------------------------------------------------------------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+	.list-select{ width: 25px; height: 25px;  cursor: pointer; background: url(../../../../images/mobile/list-unselect.png) no-repeat; background-size: auto 100%; background-position: center right; }
+	.list-select.active{ background-color: #50CEE2; background: url(../../../../images/mobile/list-select.png) no-repeat; background-size: auto 100%; background-position: center right; }
+
+	.list-selAll{ width: 25px; height: 25px; margin: 14px auto 0 auto; border: 2px solid #C2CCDE; cursor: pointer; background-color: #FFFFFF; }
+	.list-selAll.active{ background-color: #50CEE2; }
+}
+@media (min-width: 768px) {
+	.list-select{ width: 25px; height: 25px;  cursor: pointer; background: url(../../../../images/mobile/list-unselect.png) no-repeat; background-size: auto 100%; background-position: center right; }
+    .list-select.active{ background-color: #50CEE2; background: url(../../../../images/mobile/list-select.png) no-repeat; background-size: auto 100%; background-position: center right; }
+    
+    .list-selAll{ width: 25px; height: 25px; margin: 14px auto 0 auto; border: 2px solid #C2CCDE; cursor: pointer; background-color: #FFFFFF; }
+	.list-selAll.active{ background-color: #50CEE2; }
+}

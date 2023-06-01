@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="user-scalable=no">
+  <title>南京商务首页</title>
+  <link rel="stylesheet" type="text/css" href="../css/index.css">
+  <link rel="stylesheet" href="../css/swiper.min.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="swiper-container">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide"><img src="../image/swiper01.png" /></div>
+        <div class="swiper-slide"><img src="../image/swiper02.png" /></div>
+        <div class="swiper-slide"><img src="../image/swiper03.png" /></div>
+        <div class="swiper-slide"><img src="../image/swiper04.png" /></div>
+      </div>
+      <!-- 如果需要分页器 -->
+      <div class="swiper-pagination"></div>
+      <!-- 如果需要导航按钮 -->
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+      <!-- 如果需要滚动条 -->
+      <!-- <div class="swiper-scrollbar"></div> -->
+    </div>
+  </div>
+
+  <div id="items"></div>
+
+
+  <script src="../js/jquery-3.4.1.min.js"></script>
+  <!-- 引入轮播图js样式  -->
+  <script src="../js/swiper.min.js"></script>
+  <script src="../js/static.js"></script>
+  <script type="text/javascript">
+
+    let menuList = [{
+      main_title: '农产品市场',
+      units: [{
+        title: '网点查询',
+        titleSub: '全市网点分布情况',
+        icon: "https://site.sumexsoft.com/images/wechat/home/sqwd.png",
+        type: 'wdcx'
+      }, {
+        title: '时点菜价',
+        titleSub: '走势先知道',
+        icon: "https://site.sumexsoft.com/images/wechat/home/kqhx.png",
+        type: 'sdcj'
+      }]
+    }];
+
+    //页面加载后执行
+    window.onload = function () {
+      var mySwiper = new Swiper('.swiper-container', {
+        // direction: 'vertical', // 垂直切换选项
+        loop: true, // 循环模式选项
+        // 分页器小圆点
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+        autoplay: {
+          delay: 2000, //自动轮播时间
+          disableOnInteraction: true  //用户操作后不轮播
+        },
+        // 如果需要前进后退按钮
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+        // 如果需要滚动条
+        // scrollbar: {
+        //   el: '.swiper-scrollbar',
+        // },
+      })
+
+      // var html = '';
+      // for (var i = 0; i < menuList.length; i++) {
+      //     html += `<div class='item'>
+      //               <div class='title'>
+      //                 <div class='cont'>`+ menuList[i].main_title +`</div>
+      //               </div>`;
+      //               if((menuList[i].units.length)%2 == 0) {
+      //                 html += `<div class="units has">`;
+      //               } else {
+      //                 html += `<div class="units">`;
+      //               }
+      //               for (var j = 0; j < menuList[i].units.length; j++) {
+      //                 html += '<div class="unit" onclick="skipToPage(\'' + menuList[i].units[j].type + '\')">'+
+      //                           `<div class='obj'>
+      //                             <div class='unit-title'>
+      //                               <div class='title1'><span>`+ menuList[i].units[j].title +`</span></div>
+      //                               <div class='title2'>`+ menuList[i].units[j].titleSub +`</div>
+      //                             </div>
+      //                             <img class='unit-img' src="`+ menuList[i].units[j].icon +`" />
+      //                           </div>
+      //                          </div>`;
+      //               }
+      //     html += `</div>
+      //             </div>`;
+      // }
+      // $("#items").append(html)
+      getListData()
+    }
+
+    function getListData() {
+      $.ajax({
+        url: staticurl + '/common/cmsCateXcx',
+        type: 'GET',
+        async: false,
+        data: {
+          code: 'NJH5'
+        },
+        success: function (res) {
+          var josndata = []
+          josndata.push(JSON.parse(res));
+          console.log('josndata', josndata)
+
+          var html = '';
+          for (var i = 0; i < josndata.length; i++) {
+            html += `<div class='item'>
+                    <div class='title'>
+                      <div class='cont'>`+ josndata[i].main_title + `</div>
+                    </div>`;
+            if ((josndata[i].cms_cate_xcx.length) % 2 == 0) {
+              html += `<div class="units has">`;
+            } else {
+              html += `<div class="units">`;
+            }
+            for (var j = 0; j < josndata[i].cms_cate_xcx.length; j++) {
+              html += '<div class="unit" onclick="skipToPage(\'' + josndata[i].cms_cate_xcx[j].code + '\')">' +
+                `<div class='obj'>
+                                  <div class='unit-title'>
+                                    <div class='title1'><span>`+ josndata[i].cms_cate_xcx[j].name + `</span></div>
+                                    <div class='title2'>`+ josndata[i].cms_cate_xcx[j].descr + `</div>
+                                  </div>
+                                  <img class='unit-img' src="`+ josndata[i].cms_cate_xcx[j].pic + `" />
+                                </div>
+                               </div>`;
+            }
+            html += `</div>
+                  </div>`;
+          }
+          $("#items").append(html)
+        },
+        error: function (err) {
+          console.log('err', err);
+        }
+      });
+    }
+
+    // 跳转对应页面
+    function skipToPage(type) {
+      console.log('type', type)
+      if(type == 'ENTQUERT') {
+        window.location.href = pageUrl + '/views/ent.html';
+      } else if(type == 'TIMEORDERPRICE') {
+
+      }
+    }
+
+  </script>
+</body>
+
+</html>

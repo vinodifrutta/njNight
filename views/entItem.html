@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="user-scalable=no">
+  <title>详情页</title>
+  <link rel="stylesheet" type="text/css" href="../css/yEntDetail.css?v=2">
+  <!--  <script src="../js/echarts.min.js"></script>-->
+</head>
+
+<body>
+  <div class="container" id="container">
+    <!--    <div class="title" id="entTitle"></div>-->
+    <!--    <div class="infoDiv">-->
+    <!--      <img class="thumb-img" id="entImg" src="">-->
+    <!--      <div class="info-right-panel" id="infoPanel">-->
+    <!-- <div class="enttype item">
+          <img class="little-img" src="https://wx.njsmzx.gov.cn/njssyxx/thumb/2020_06/1592475092944.png" />
+          <span>大中型超市</span>
+          <span style="padding-left: 5px;">新街口</span>
+          <span style="padding-left: 5px;">江宁区</span>
+        </div>
+        <div class="enttel item">
+          <img class="little-img" src="https://site.sumexsoft.com/images/wechat/dot/sywd-750_13.jpg" />
+          <span class="entaddress-one">电话</span>
+          <span class="entaddress-two" id="entPhone"></span>
+        </div>
+        <div class="entaddress item">
+          <div style="display: inline-block;">
+            <img class="little-img" src="https://site.sumexsoft.com/images/wechat/dot/sywd-750_13.jpg" />
+            <span class="entaddress-one">地址</span>
+          </div>
+          <div class="addrDiv" id="entAddr"></div>
+        </div> -->
+    <!--      </div>-->
+    <!--    </div>-->
+  </div>
+
+  <div class="activeDiv" id="activePanel" style="display: none">
+    <div class="active-title">最新活动</div>
+    <div id="activeItem"></div>
+    <!-- <div class="active-item"><span class="info-tip">惠</span><span style="font-size: 2em; color: #4c4c4c;">活动信息内容介绍</span></div>
+    <div class="active-item"><span class="info-tip">惠</span><span style="font-size: 2em; color: #4c4c4c;">活动信息内容介绍</span></div>
+    <div class="active-item"><span class="info-tip">惠</span><span style="font-size: 2em; color: #4c4c4c;">活动信息内容介绍</span></div> -->
+  </div>
+
+  <div class="activeDiv" id="introducePanel" style="display: none">
+    <div class="active-title">简介</div>
+    <div id="activeIntroduce"></div>
+  </div>
+
+  <div class="tipDiv" id="noTip">请求出错，暂无数据！</div>
+  <div class="mask"></div>
+  <div class="echartDiv" id="echarts">
+    <div class="closeDiv">
+      <div class="close" onclick="toClose()">
+        <span class="close-icon"></span>
+      </div>
+    </div>
+    <div class="echart-title" id="echartTitle"></div>
+    <div class="dateBtns">
+      <div class="item-btn month" onclick="getTime('month')">近一个月</div>
+      <div class="item-btn halfyear" onclick="getTime('halfyear')">近半年</div>
+      <div class="item-btn year" onclick="getTime('year')">近一年</div>
+    </div>
+    <div id="main" style="margin-left: 5%;width: 90%;height:600px;"></div>
+  </div>
+
+  <script src="../js/jquery-3.4.1.min.js"></script>
+  <script src="../js/alert.js"></script>
+  <script src="../js/static.js?v=1"></script>
+  <script type="text/javascript">
+    saveAsk('详情页');
+    var clickType = '';
+    var timeS = '';
+    var timeE = '';
+    var vipId = '';
+    var dictId = '';
+    var topSpace = 0;
+    var entId = getUrlParameter('entId');
+    var type = getUrlParameter('type');
+    var path = "../json/queryEntList.json";
+    if (type === 'lzh') {
+      path = "../json/queryLzhEntList.json"
+    }
+    console.log('entId', entId)
+    getEntDetail(entId);
+
+    // 设施数量数据初始化
+    function getEntDetail(entId) {
+      console.log('entId', entId)
+      // $.getJSON(path,function (josndata){
+      //   josndata.forEach(e=>{
+      //     if(e.entId === entId){
+      //       let res = {};
+      //       res.data = e;
+      //       var html = '';
+      //       html += '<div class="title" id="entTitle">'+res.data.entName+'</div>';
+      //       html += '<div class="infoDiv"><img class="thumb-img" id="entImg" src="'+res.data.thumb4+'">';
+      //       html += '<div class="info-right-panel" id="infoPanel">';
+      //       //$('#entTitle').html(res.data.entName);
+      //       //$("#entImg").attr("src", res.data.thumb4);
+      //       var map = bd_decrypt(res.data.longitude, res.data.latitude)
+      //       console.log('map', map)
+      //       //var html = '';
+      //       html += `<div class="enttype item">
+      //               <img class="little-img" src="` + res.data.icon + `" />
+      //               <span>`+ res.data.adminDivName +`</span>
+      //               <span style="padding-left: 5px;">`+ res.data.indClassName+`</span>
+      //             </div>
+      //             <div class="enttel item">
+      //               <div>
+      //                 <img class="little-img" src="../image/dhhm.png" />
+      //               </div>
+      //               <a class="entaddress-one" href="tel:` + res.data.contact + `">电话</a>
+      //               <div class="aabb">
+      //                 <div>
+      //                   <span class="entaddress-two" id="entPhone">`
+      //       if (res.data.contact === '' || res.data.contact === null || res.data.contact === '暂无电话') {
+      //         html += `<span>暂无电话</span>`
+      //       } else {
+      //         html += `<a href="tel:` + res.data.contact + `">` + res.data.contact +`</a>`
+      //       }
+      //       html += `</span>
+      //                 </div>
+      //                 <a href="tel:` + res.data.contact + `">
+      //                   <img class= "little-img" src = "../image/dh.png" />
+      //                 </a>
+      //               </div>
+      //             </div>
+      //             <div class="entaddress item">
+      //               <div>
+      //                 <img class="little-img" src="../image/sywd-750_13.jpg" />
+      //               </div>
+      //               <div class="entaddress-one">地址</div>
+      //               <div class="aabb">
+      //                 <div class="addrDiv" id="entAddr">
+      //                   `+ res.data.address +`
+      //                   <a href="https://uri.amap.com/marker?position=` + map.lng + `,` + map.lat + `&name=` + res.data.entName +`">
+      //                 </div>
+      //                 <div>
+      //                   <img class= "little-img" src = "../image/sywd-750_10.jpg" />
+      //                 </div>
+      //               </div>
+      //             </div>`;
+      //       var html2 = '';
+      //       if (res.data.activityList.length > 0) {
+      //         for (var i = 0; i < res.data.activityList.length; i++) {
+      //           //if (j < 2) {
+      //             html2 += `<div class="active-item"><span class="info-tip">惠</span><span style="font-size: 24px; color: #4c4c4c;" onclick="gotoActivityItem('` + res.data.activityList[i].activityId + `','` + entId + `','` + type + `')">`+ res.data.activityList[i].name +`</span></div>`;
+      //           // }
+      //           // else {
+      //           //   html2 += `<div class="active-item"><span style="font-size: 24px; color: #4c4c4c;">查看更多</span></div>`;
+      //           // }
+
+      //         }
+      //         $("#activePanel").css('display', 'block')
+      //       } else {
+      //         $("#activePanel").css('display', 'none')
+      //       }
+      //       html += '</div></div>'
+      //       $("#container").append(html);
+      //       $("#activeItem").append(html2);
+      //       if(res.data.content) {
+      //         $('#activeIntroduce').append('<div class="introduceDiv">' + res.data.content + '</div>')
+      //       }
+      //       // else {
+      //       //   $('#introducePanel').css('display', 'none')
+      //       // }
+      //       $("#introducePanel").css('display', 'block')
+      //     }
+      //   })
+      // })
+
+
+      $.ajax({
+        url: staticurl + '/xcxDot/queryEntDetail',
+        type: 'GET',
+        async: false,
+        data: {
+          entId: entId,
+        },
+        success: function (res) {
+          var res = JSON.parse(res);
+          console.log('res', res);
+          var html = '';
+          html += '<div class="title" id="entTitle">' + res.data.entName + '</div>';
+          html += '<div class="infoDiv"><img class="thumb-img" id="entImg" src="' + res.data.thumb4 + '">';
+          html += '<div class="info-right-panel" id="infoPanel">';
+          //$('#entTitle').html(res.data.entName);
+          //$("#entImg").attr("src", res.data.thumb4);
+          var map = bd_decrypt(res.data.longitude, res.data.latitude)
+          console.log('map', map)
+          //var html = '';
+          html += `<div class="enttype item">
+                    <img class="little-img" src="` + res.data.icon + `" />
+                    <span>`+ res.data.adminDivName + `</span>
+                    <span style="padding-left: 5px;">`+ res.data.indClassName + `</span>
+                  </div>
+                  <div class="enttel item">
+                    <div>
+                      <img class="little-img" src="../image/dhhm.png" />
+                    </div>
+                    <a class="entaddress-one" href="tel:` + res.data.contact + `">电话</a>
+                    <div class="aabb">
+                      <div>
+                        <span class="entaddress-two" id="entPhone">`
+          if (res.data.contact === '' || res.data.contact === null || res.data.contact === '暂无电话') {
+            html += `<span>暂无电话</span>`
+          } else {
+            html += `<a href="tel:` + res.data.contact + `">` + res.data.contact + `</a>`
+          }
+          html += `</span>
+                      </div>
+                      <a href="tel:` + res.data.contact + `">
+                        <img class= "little-img" src = "../image/dh.png" />
+                      </a>
+                    </div>
+                  </div>
+                  <div class="entaddress item">
+                    <div>
+                      <img class="little-img" src="../image/sywd-750_13.jpg" />
+                    </div>
+                    <div class="entaddress-one">地址</div>
+                    <div class="aabb">
+                      <div class="addrDiv" id="entAddr">
+                        `+ res.data.address + `
+                        <a href="https://uri.amap.com/marker?position=` + map.lng + `,` + map.lat + `&name=` + res.data.entName + `">
+                      </div>
+                      <div>
+                        <img class= "little-img" src = "../image/sywd-750_10.jpg" />
+                      </div>
+                    </div>
+                  </div>`;
+          var html2 = '';
+          if (res.data.activityList.length > 0) {
+            for (var i = 0; i < res.data.activityList.length; i++) {
+              //if (j < 2) {
+              html2 += `<div class="active-item"><span class="info-tip">惠</span><span style="font-size: 24px; color: #4c4c4c;" onclick="gotoActivityItem('` + res.data.activityList[i].activityId + `','` + entId + `','` + type + `')">` + res.data.activityList[i].name + `</span></div>`;
+              // }
+              // else {
+              //   html2 += `<div class="active-item"><span style="font-size: 24px; color: #4c4c4c;">查看更多</span></div>`;
+              // }
+
+            }
+            $("#activePanel").css('display', 'block')
+          } else {
+            $("#activePanel").css('display', 'none')
+          }
+          html += '</div></div>'
+          $("#container").append(html);
+          $("#activeItem").append(html2);
+          if (res.data.content) {
+            $('#activeIntroduce').append('<div class="introduceDiv">' + res.data.content + '</div>')
+          }
+          // else {
+          //   $('#introducePanel').css('display', 'none')
+          // }
+          $("#introducePanel").css('display', 'block');
+        },
+        error: function (err) {
+          console.log('err', err);
+          $('#container').html('')
+          $('#noTip').css('display', 'block');
+        }
+      });
+    }
+
+    // 详情页
+    function gotoActivityItem(activityId, entId, type) {
+      window.location.href = pageUrl + '/views/entActivityItem.html?activityId=' + activityId + '&entId=' + entId + '&type=' + type;
+    }
+
+    // 百度坐标转高德坐标
+    function bd_decrypt(bd_lng, bd_lat) {
+      var X_PI = Math.PI * 3000.0 / 180.0;
+      var x = bd_lng - 0.0065;
+      var y = bd_lat - 0.006;
+      var z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * X_PI);
+      var theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * X_PI);
+      var gg_lng = z * Math.cos(theta);
+      var gg_lat = z * Math.sin(theta);
+      return { lng: gg_lng, lat: gg_lat }
+    }
+
+    function changeDateBtn(type) {
+      clickType = type;
+      $('#dayStart').val("");
+      $('#dayEnd').val("");
+      $('#monthStart').val("");
+      $('#monthEnd').val("");
+      $('#yearStart').val("");
+      $('#yearEnd').val("");
+      $('.item-btn').removeClass('active');
+      $('.dateBtns .' + type).addClass('active');
+      $('.itemInputDiv').hide();
+      $('.sureBtn').show();
+      $('#' + type).show();
+    }
+
+    function toClose() {
+      $('.mask').css('display', 'none');
+      $('#echarts').css('display', 'none');
+      this.BodyScroll(true)
+    }
+
+    // 遮罩弹窗禁止下面滑动  isState传true可以滑动  传false 不可以滑动
+    function BodyScroll(isState) {
+      var bodyDoc = document.body
+      if (!isState) {
+        topSpace = window.scrollY
+        bodyDoc.style.position = 'fixed'
+        bodyDoc.style.width = '100%'
+        bodyDoc.style.top = -topSpace + 'px'
+      } else {
+        bodyDoc.style.position = ''
+        bodyDoc.style.top = ''
+        bodyDoc.style.width = '100%'
+        window.scrollTo(0, topSpace) // 回到原先位置
+      }
+    }
+
+    function getUrlParameter(name) {
+      name = name.replace(/[]/, "\[").replace(/[]/, "\[").replace(/[]/, "\\\]");
+      var regexS = "[\\?&]" + name + "=([^&#]*)";
+      var regex = new RegExp(regexS);
+      var results = regex.exec(window.parent.location.href);
+      if (results == null) return ""; else {
+        return decodeURI(results[1]);
+      }
+    };
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="user-scalable=no">
+  <title>网点查询</title>
+  <link rel="stylesheet" type="text/css" href="/css/search.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="topDiv">
+      <div class='searchDiv'>
+        <div class="search">
+          <div class="search-box">
+            <input class="search-input" type="" oninput="searchInputAction()" placeholder="请输入网点名称" name="" id="keyword"
+              value="" autofocus />
+          </div>
+        </div>
+      </div>
+      <div class="search-totalcount" id="searchResult"></div>
+    </div>
+    <div class="search-content-body" id="searchCont">
+      <!-- <div  style="padding-top: 200px;"></div> -->
+    </div>
+  </div>
+
+  <script src="/js/jquery-3.4.1.min.js"></script>
+  <script src="/js/static.js"></script>
+  <script type="text/javascript">
+    var flag = false;
+    var data = JSON.parse(getUrlParameter('data'));
+    $("#keyword").val(data.entName)
+    console.log('&*********', data)
+    var num = 0;
+    var searchResultDatas = []
+
+
+    
+    var scollif = true;
+    this.searchInputAction()
+    $(document).ready(function () {
+      var range = 20;             //距下边界长度/单位px
+      var maxnum = 1000;          //设置加载最多次数
+      var totalheight = 0;
+      var main = $(".wz-box");       //主体元素
+      $(window).scroll(function () {
+        //滚动条距顶部距离(页面超出窗口的高度)
+        var srollPos = $(window).scrollTop();
+        totalheight = parseFloat($(window).height()) + parseFloat(srollPos);
+        //判断上拉的高度以决定是否加载更多
+        if (($(document).height() - range) <= totalheight && num != maxnum) {
+          if(flag) {
+            loadMore();
+          }
+        }
+      });
+    });
+
+
+    //加载更多:ajax请求，获取文章列表
+    function loadMore() {
+      $.ajax({
+        url: staticurl + '/MarketEnt/queryMarketEntList?',
+        type: 'POST',
+        async: false,
+        data: {
+          pageSize: 10,
+          pageIndex: num++,
+          adminDiv: data.adminDiv,
+          indClass: data.indClass,
+          entName: $("#keyword").val(),
+          latitude: data.latitude,
+          longitude: data.longitude
+        },
+        success: function (data) {
+          data = JSON.parse(data);
+          console.log('***************', data)
+          searchResultDatas = data.datalist;
+          var html = '';
+          for (var i = 0; i < searchResultDatas.length; i++) {
+            html += '<div class="search-result-item" onclick="toEntInfo(\'' + searchResultDatas[i].ent_id + '\',' + '\'' + searchResultDatas[i].ent_basic_id + '\',' + '\'' + searchResultDatas[i].ent_name + '\')">';
+            html += '<div class="search-result-content">';
+            html += '<div style="font-size: 2.2em;">' + searchResultDatas[i].ent_name + '</div>'
+            html += '<div style="padding: 20px 0 10px 0;">';
+            html += '<div class="search-result-img"><image class="address-img" src="https://site.sumexsoft.com/images/wechat/dot/sywd-750_13.jpg"></image></div>'
+            html += '<span class="result-entaddress">' + searchResultDatas[i].address + '</span>';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+          }
+          $("#searchCont").append(html);
+          $("#searchResult").html('<div style="padding: 20px 0;"><span>查找到' + data.totalCount + '个结果</span></div>')
+        },
+        error: function () {
+          console.log('err', err);
+        }
+      });
+    }
+
+    function searchInputAction() {
+      let value = $("#keyword").val().trim()
+      console.log('value', value)
+      $("#searchCont").html('');
+      if (value.length == 0) {
+        searchResultDatas = []
+        $("#searchResult").css('display', 'none')
+        countShow = false
+      } else {
+        num = 0
+        $("#searchResult").css('display', 'block')
+        flag = true
+        this.loadMore();
+      }
+    }
+
+    // function getUrlParameter(name) {
+    //   name = name.replace(/[]/, "\[").replace(/[]/, "\[").replace(/[]/, "\\\]");
+    //   var regexS = "[\\?&]" + name + "=([^&#]*)";
+    //   var regex = new RegExp(regexS);
+    //   var results = regex.exec(window.parent.location.href);
+    //   if (results == null) return ""; else {
+    //     return results[1];
+    //   }
+    // };
+
+    function toEntInfo(a, b, c) {
+      console.log(a, b, c)
+      window.location.href = encodeURI(pageUrl + '/views/ent.html?ent_basic_id=' + b + '&id=' + a + '&keyword=' + c)
+    }
+
+    function getUrlParameter(name) {
+      name = name.replace(/[]/, "\[").replace(/[]/, "\[").replace(/[]/, "\\\]");
+      var regexS = "[\\?&]" + name + "=([^&#]*)";
+      var regex = new RegExp(regexS);
+      var results = regex.exec(window.parent.location.href);
+      if (results == null) return ""; else {
+        return decodeURI(results[1]);
+      }
+    };
+
+  </script>
+</body>
+
+</html>
